@@ -5,7 +5,6 @@ import morgan from 'morgan'
 import {green, greenf, yellow} from '../logger'
 import {connectToMongo, disconnectFromMongo} from '../db'
 import events from '../routes/events-route'
-import roles from '../routes/roles.route'
 import config from '../config'
 
 // green('node env=', process.env.NODE_ENV)

@@ -23,24 +23,10 @@ const eventSchema = new mongoose.Schema({
     minlength: 1,
     trim: true
   },
-  // comments: {
-  //   type: String
-  // },
-  // email: {
-  //   type: String,
-  //   required: true,
-  //   minlength: 1,
-  //   trim: true
-  // },
-  // exempt: {
-  //   type: Boolean,
-  //   default: false
-  // },
-  // phones: [phoneSchema],
-  // roles: [],
+
 })
 
-let Event = mongoose.model('Member', memberSchema)
+let Event = mongoose.model('Event', eventSchema)
 
 
 export default Event
