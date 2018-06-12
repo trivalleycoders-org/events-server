@@ -4,7 +4,7 @@ import cors from 'cors'
 import morgan from 'morgan'
 import {green, greenf, yellow} from '../logger'
 import {connectToMongo, disconnectFromMongo} from '../db'
-import members from '../routes/members.route'
+import events from '../routes/events-route'
 import roles from '../routes/roles.route'
 import config from '../config'
 
@@ -22,8 +22,7 @@ app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(morgan('dev'))
-app.use('/members', members)
-app.use('/roles', roles)
+app.use('/events', events)
 app.get('/', (req, res) => {
   res.send('Invalid endpoint!')
 })
