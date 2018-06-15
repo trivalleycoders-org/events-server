@@ -5,7 +5,9 @@ import morgan from 'morgan'
 import {green, greenf, yellow} from '../logger'
 import {connectToMongo, disconnectFromMongo} from '../db'
 import events from '../routes/events-route'
+import images from '../routes/image-route'
 import config from '../config'
+import formidable from 'formidable'
 
 // green('node env=', process.env.NODE_ENV)
 const app = express()
@@ -22,6 +24,7 @@ app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: true}))
 app.use(morgan('dev'))
 app.use('/events', events)
+app.use('/images', images)
 app.get('/', (req, res) => {
   res.send('Invalid endpoint!')
 })
