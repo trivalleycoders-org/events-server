@@ -17,11 +17,17 @@ const eventSchema = new mongoose.Schema({
   //   minlength: 1,
   //   trim: true
   // },
-  image: {
+  time: {
     type: String,
-    required: true,
-    minlength: 1,
-    trim: true
+  },
+  title: {
+    type: String,
+  },
+  venu: {
+    type: String,
+  },
+  imageUrl: {
+    type: String,
   },
 
 })
