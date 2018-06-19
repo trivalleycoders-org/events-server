@@ -1,6 +1,5 @@
 import Mongoose from 'mongoose'
 import { yellowf, greenf, redf, yellow } from '../logger'
-
 Mongoose.Promise = global.Promise
 
 const readyState = () => {
@@ -26,6 +25,7 @@ const readyState = () => {
 export const connectToMongo = () => {
     readyState()
     // await Mongoose.connect(process.env.MONGODB_URI)
+    yellow('URI', process.env.MONGODB_URI)
     Mongoose.connect(process.env.MONGODB_URI)
     .then(() => {
       readyState()

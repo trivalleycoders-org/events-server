@@ -6,8 +6,8 @@ import {green, greenf, yellow} from '../logger'
 import {connectToMongo, disconnectFromMongo} from '../db'
 import events from '../routes/events-route'
 import images from '../routes/image-route'
-import config from '../config'
-import formidable from 'formidable'
+import tags from '../routes/tags-route'
+import '../config'
 
 // green('node env=', process.env.NODE_ENV)
 const app = express()
@@ -15,7 +15,7 @@ const port = process.env.PORT
 
 
 if (process.env.NODE_ENV !== 'test') {
-  yellow('env', process.env.NODE_ENV)
+  yellow('server.env', process.env.NODE_ENV)
   connectToMongo()
 }
 
@@ -25,6 +25,7 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use(morgan('dev'))
 app.use('/events', events)
 app.use('/images', images)
+app.use('/tags', tags)
 app.get('/', (req, res) => {
   res.send('Invalid endpoint!')
 })

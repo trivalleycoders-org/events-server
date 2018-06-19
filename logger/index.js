@@ -16,7 +16,8 @@ export const green = (message, value) => {
    log(chalk.bgGreen(` ${message} `), checkValue(value))
 }
 export const yellow = (message, value) => {
-   log(chalk.bgYellow(` ${message} `), checkValue(value))
+   // log(chalk.bgYellow(` ${message} `), checkValue(value))
+  log(chalk.bgYellow(chalk.black(` ${message} `)), checkValue(value))
 }
 export const blue = (message, value) => {
    log(chalk.bgBlue(` ${message} `), checkValue(value))
