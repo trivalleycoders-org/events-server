@@ -92,9 +92,11 @@
       <path value="$PROJECT_DIR$/package.json" />
     </packageJsonPaths>
   </component>
-  <component name="ProjectFrameBounds" extendedState="6">
-    <option name="width" value="960" />
-    <option name="height" value="1080" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="612" />
+    <option name="y" value="127" />
+    <option name="width" value="950" />
+    <option name="height" value="810" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -198,15 +200,15 @@
       <workItem from="1529268928861" duration="14000" />
       <workItem from="1529279442586" duration="3619000" />
       <workItem from="1529292390522" duration="26000" />
-      <workItem from="1529416127688" duration="7421000" />
+      <workItem from="1529416127688" duration="7628000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="11252000" />
+    <option name="totallyTimeSpent" value="11459000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1920" height="1080" extended-state="6" />
+    <frame x="612" y="127" width="950" height="810" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info anchor="bottom" id="TODO" order="6" />
@@ -217,7 +219,7 @@
       <window_info anchor="bottom" id="Run" order="2" />
       <window_info anchor="right" x="2923" y="59" width="774" height="959" id="Terminal" order="5" type="FLOATING" weight="0.80625" />
       <window_info id="Designer" order="2" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.096875" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.19578947" />
       <window_info anchor="right" id="Database" order="4" />
       <window_info anchor="bottom" id="Find" order="1" />
       <window_info id="Learn" order="2" />
