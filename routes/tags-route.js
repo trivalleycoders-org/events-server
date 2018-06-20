@@ -7,10 +7,9 @@ import { red, blue, yellow } from '../logger'
 
 router.delete('/:id', async (req, res) => {
   const id = req.params.id
-  // restore when using actual _id
-  // if (!isValidObjectID(id)) {
-  //   return res.status(404).send()
-  // }
+  if (!isValidObjectID(id)) {
+    return res.status(404).send()
+  }
   try {
     let tag = await Tag.findByIdAndRemove(id)
     if (!tag) {

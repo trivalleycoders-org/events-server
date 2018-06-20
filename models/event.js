@@ -11,25 +11,25 @@ let phoneSchema = new mongoose.Schema({
 })
 
 const eventSchema = new mongoose.Schema({
-  // time: {
-  //   type: Date,
-  //   required: true,
-  //   minlength: 1,
-  //   trim: true
-  // },
-  time: {
+  endDateTime: {
+    type: Date,
+  },
+  imageUrl: {
     type: String,
   },
+  price: {
+    type: Number,
+  },
+  startDateTime: {
+    type: Date,
+  },
+  tags: [],
   title: {
     type: String,
   },
   venu: {
     type: String,
   },
-  imageUrl: {
-    type: String,
-  },
-
 })
 
 let Event = mongoose.model('Event', eventSchema)
