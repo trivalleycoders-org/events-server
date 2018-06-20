@@ -5,6 +5,22 @@ import { isValidObjectID } from '../db/utils'
 import { append } from 'ramda'
 import { red, blue, yellow } from '../logger'
 
+router.delete('/:id', async (req, res) => {
+  const id = req.params.id
+  // restore when using actual _id
+  // if (!isValidObjectID(id)) {
+  //   return res.status(404).send()
+  // }
+  try {
+    let tag = await Tag.findByIdAndRemove(id)
+    if (!tag) {
+      return res.status(404).send()
+    }
+    res.send({tag})
+  } catch (e) {
+    res.status(400).send()
+  }
+})
 
 router.post('/', async (req, res) => {
   try {
@@ -43,22 +59,6 @@ router.post('/', async (req, res) => {
 //     res.send(event)
 //   } catch (e) {
 //     res.status(400).send(e)
-//   }
-// })
-
-// router.delete('/:id', async (req, res) => {
-//   const id = req.params.id
-//   if (!isValidObjectID(id)) {
-//     return res.status(404).send()
-//   }
-//   try {
-//     let event = await Eventember.findByIdAndRemove(id)
-//     if (!event) {
-//       return res.status(404).send()
-//     }
-//     res.send({event})
-//   } catch (e) {
-//     res.status(400).send()
 //   }
 // })
 
