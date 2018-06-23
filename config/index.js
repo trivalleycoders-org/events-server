@@ -11,11 +11,11 @@ if (!env) {
 
 if(env === 'development') {
   greenf('environment = ', process.env.NODE_ENV)
-  process.env.PORT = 3001
+  process.env.PORT = 3030
   process.env.MONGODB_URI = process.env.MONGODB_URI_DEV
 } else if(env === 'test') {
   greenf('environment = ', process.env.NODE_ENV)
-  process.env.PORT = 3001
+  process.env.PORT = 3030
   process.env.MONGODB_URI = process.env.MONGODB_URI_TEST
 } else if(env === 'production') {
   greenf('environment = ', process.env.NODE_ENV)
