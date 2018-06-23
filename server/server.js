@@ -2,7 +2,7 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import morgan from 'morgan'
-import {green, greenf, yellow} from '../logger'
+import {greenf, redf, yellow} from '../logger'
 import {connectToMongo, disconnectFromMongo} from '../db'
 import events from '../routes/events-route'
 import images from '../routes/image-route'
@@ -27,6 +27,7 @@ app.use('/events', events)
 app.use('/images', images)
 app.use('/tags', tags)
 app.get('/', (req, res) => {
+  redf('Invalid endpoint!')
   res.send('Invalid endpoint!')
 })
 
