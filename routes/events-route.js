@@ -1,9 +1,9 @@
 import express from 'express'
-const router = express.Router()
 import Event from '../models/event'
 import { isValidObjectID } from '../db/utils'
-import { append } from 'ramda'
-import { red, blue, yellow } from '../logger'
+import { red, yellow } from '../logger'
+
+const router = express.Router()
 
 router.get('/', async (req, res) => {
   try {
@@ -51,7 +51,7 @@ router.delete('/:id', async (req, res) => {
     return res.status(404).send()
   }
   try {
-    let event = await Eventember.findByIdAndRemove(id)
+    let event = await Event.findByIdAndRemove(id)
     if (!event) {
       return res.status(404).send()
     }
