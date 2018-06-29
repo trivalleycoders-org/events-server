@@ -30,7 +30,7 @@ const eventSchema = new mongoose.Schema({
   title: {
     type: String,
   },
-  venu: {
+  venue: {
     type: String,
   },
 })
