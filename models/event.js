@@ -14,6 +14,9 @@ const eventSchema = new mongoose.Schema({
   category: {
     type: String,
   },
+  free: {
+    type: Boolean,
+  },
   endDateTime: {
     type: Date,
   },
