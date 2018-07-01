@@ -11,10 +11,19 @@ let phoneSchema = new mongoose.Schema({
 })
 
 const eventSchema = new mongoose.Schema({
+  category: {
+    type: String,
+  },
+  free: {
+    type: Boolean,
+  },
   endDateTime: {
     type: Date,
   },
   imageUrl: {
+    type: String,
+  },
+  linkToUrl: {
     type: String,
   },
   organization: {
@@ -30,7 +39,7 @@ const eventSchema = new mongoose.Schema({
   title: {
     type: String,
   },
-  venu: {
+  venue: {
     type: String,
   },
 })
