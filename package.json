@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "description": "server for rotary project",
   "scripts": {
-    "start": "SET \"NODE_ENV=development\" && nodemon server/server.js --exec babel-node || export NODE_ENV=development",
+    "start": "SET \"NODE_ENV=development\" || export NODE_ENV=development && nodemon server/server.js --exec babel-node",
     "test-orig": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha --compilers js:babel-core/register server/**/*.test.js ",
     "test-v2": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha --require babel-core/register server/**/*.test.js ",
     "test": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha",
