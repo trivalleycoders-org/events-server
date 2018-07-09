@@ -1,6 +1,7 @@
 import express from 'express'
 import Event from '../models/event'
-import { isValidObjectID } from '../db/utils'
+import { isValidObjectID, object_idFromHex } from '../db/utils'
+import { omit } from 'ramda'
 import { red, yellow } from '../logger'
 
 const router = express.Router()
@@ -31,12 +32,13 @@ router.get('/:id', async (req, res) => {
 })
 
 router.post('/', async (req, res) => {
+  yellow('*********** POST')
   try {
     const event = req.body
-    yellow('post: event', event)
+    // yellow('post: event', event)
     let ne = new Event(event)
     const eventAdded = await ne.save()
-    yellow('eventAdded', eventAdded)
+    // yellow('eventAdded', eventAdded)
     res.send(eventAdded)
   } catch (e) {
     // red('events.route: post', e)
@@ -51,7 +53,8 @@ router.delete('/:id', async (req, res) => {
     return res.status(404).send()
   }
   try {
-    let event = await Event.findByIdAndRemove(id)
+    const _id = object_idFromHex(id)
+    let event = await Event.findByIdAndRemove(_id)
     if (!event) {
       return res.status(404).send()
     }
@@ -62,16 +65,18 @@ router.delete('/:id', async (req, res) => {
 })
 
 router.patch('/:id', async (req, res) => {
-
+  yellow('*********** PATCH')
   try {
+    yellow('req.body', req.body)
     const id = req.params.id
     yellow('patch: id', id)
     if (!isValidObjectID(id)) {
       return res.status(404).send()
     }
-    const eventSent = req.body.event
-    yellow('patch: body', req.body)
-    const eventToReturn = await Event.findByIdAndUpdate(id, { $set: eventSent }, { new: true })
+    // const eventToSend = omit(['_id'], req.body.event)
+    const eventToSend = req.body
+    yellow('patch: eventToSend', eventToSend)
+    const eventToReturn = await Event.findByIdAndUpdate(id, { $set: eventToSend }, { new: true })
     yellow('patch: returned event', eventToReturn)
     if (!eventToReturn) {
       return res.status(404).send()
