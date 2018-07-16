@@ -69,8 +69,8 @@ router.patch('/:id', async (req, res) => {
     if (!isValidObjectID(id)) {
       return res.status(404).send()
     }
-    const eventSent = req.body.event
-    yellow('patch: body', req.body)
+    const eventSent = req.body
+    yellow('patch: body', eventSent)
     const eventToReturn = await Event.findByIdAndUpdate(id, { $set: eventSent }, { new: true })
     yellow('patch: returned event', eventToReturn)
     if (!eventToReturn) {
@@ -78,6 +78,7 @@ router.patch('/:id', async (req, res) => {
     }
     res.send(eventToReturn)
   } catch (e) {
+    red('catch', e)
     res.status(400).send()
   }
 
