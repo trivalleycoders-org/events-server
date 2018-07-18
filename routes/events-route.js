@@ -1,9 +1,14 @@
 import express from 'express'
 import Event from '../models/event'
 import { isValidObjectID } from '../db/utils'
+import { has } from 'ramda'
+/* Dev */
 import { red, yellow } from '../logger'
+import { Query } from 'mongoose';
+
 
 const router = express.Router()
+const hasTagsField = has('tags')
 
 router.get('/', async (req, res) => {
   try {
@@ -71,7 +76,11 @@ router.patch('/:id', async (req, res) => {
     }
     const eventSent = req.body
     yellow('patch: body', eventSent)
-    const eventToReturn = await Event.findByIdAndUpdate(id, { $set: eventSent }, { new: true })
+    const eventToReturn = await Event.findByIdAndUpdate(
+      id, 
+      { $set: eventSent }, 
+      { new: true }
+    )
     yellow('patch: returned event', eventToReturn)
     if (!eventToReturn) {
       return res.status(404).send()
