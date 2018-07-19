@@ -4,7 +4,7 @@ import { isValidObjectID } from '../db/utils'
 import { has } from 'ramda'
 /* Dev */
 import { red, yellow } from '../logger'
-import { Query } from 'mongoose';
+import { Query } from 'mongoose'
 
 
 const router = express.Router()
