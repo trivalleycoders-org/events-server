@@ -3,10 +3,11 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 import morgan from 'morgan'
 import {greenf, redf, yellow} from '../logger'
-import {connectToMongo, disconnectFromMongo} from '../db'
+import {connectToMongo} from '../db'
 import events from '../routes/events-route'
 import images from '../routes/image-route'
 import tags from '../routes/tags-route'
+import location from '../routes/location-route'
 import '../config'
 
 // green('node env=', process.env.NODE_ENV)
@@ -26,6 +27,7 @@ app.use(morgan('dev'))
 app.use('/events', events)
 app.use('/images', images)
 app.use('/tags', tags)
+app.use('/location', location)
 app.get('/', (req, res) => {
   redf('Invalid endpoint!')
   res.send('Invalid endpoint!')
