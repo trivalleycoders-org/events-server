@@ -6,7 +6,7 @@ import { red, yellow } from '../logger'
 const router = express.Router()
 const MongoClient = require('mongodb').MongoClient
 const database = 'EventsDev'
-const collection = 'cities'
+const collection = 'postalCodes'
 const url = 'mongodb://localhost:27017'
 
 const executeAggregate = async (query) => {
@@ -21,24 +21,27 @@ router.get('/postal-codes/:startsWith', async (req, res) => {
   const startsWith = req.params.startsWith
   yellow('startsWith', startsWith)
   const re = new RegExp(`^${startsWith}`)
-  
+  yellow('re', re)
+
   const match1 = {
     $match: { 'postalCode': { $regex: re , $options: 'im' } }
   }
   const project1 = {
     $project: {
+      postalCode: 1,
       searchString: {
-        $cond: { if: { $ifNull: ['$stateName', false] }, 
-          then: { $concat: [ '$postalCode', ' ', '$cityName', ' ', '$stateName' ] }, 
+        $cond: { if: { $ifNull: ['$stateName', false] },
+          then: { $concat: [ '$postalCode', ' ', '$cityName', ' ', '$stateName' ] },
           else: { $concat: [ '$postalCode', ' ', '$cityName' ] } }
-      } 
+      }
     }
   }
-  
+
   const q = [
     match1,
     project1,
   ]
+  yellow('q', q)
   const ret = await executeAggregate(q)
   yellow('ret', ret)
   res.send(JSON.stringify(ret))
@@ -59,7 +62,7 @@ router.get('/', async (req, res) => {
 router.get('/cities/:startsWith', async (req, res) => {
   const startsWith = req.params.startsWith
   yellow('startsWith', startsWith)
-  
+
   const re = new RegExp(`^${startsWith}`)
   const match1 = {
     $match: { 'cityName': { $regex: re , $options: 'im' } }
@@ -68,14 +71,14 @@ router.get('/cities/:startsWith', async (req, res) => {
     $project: {
       _id: 1,
       postalString: 1,
-      searchString: { $concat: [ '$cityName', ', ', '$stateName', ' ', '$postalCode']}    
+      searchString: { $concat: [ '$cityName', ', ', '$stateName', ' ', '$postalCode']}
     }
   }
   const q = [
     match1,
     project1,
   ]
-  
+
   const ret = await executeAggregate(q)
   yellow('ret', ret)
   res.send(JSON.stringify(ret))
