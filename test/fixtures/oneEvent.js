@@ -1,4 +1,4 @@
-export const oneNewEventIn = {
+export const newEventData = {
   'category' : 'startup',
   'endDateTime' : '2018-06-12T17:00:00.000Z',
   'imageUrl' : 'https://s3-us-west-2.amazonaws.com/photo-app-tvc/briia.jpg',
@@ -18,7 +18,7 @@ export const oneNewEventIn = {
 }
 
 
-export const oneNewEventOut = {
+export const addedEvent = {
   // don't include the _id. It will never match
   category: 'startup',
   cityName: 'San Ramon',

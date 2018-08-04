@@ -12,11 +12,8 @@ import { red, yellow } from '../logger'
 
 import { find, insert } from '../db'
 
-
 const router = express.Router()
-const hasTagsField = has('tags')
-
-
+// const hasTagsField = has('tags')
 
 router.post('/', async (req, res) => {
   try {
@@ -39,7 +36,7 @@ router.post('/', async (req, res) => {
     )
     // res.send(JSON.stringify({ result: inserted.ops[0]}))
     // yellow('post', { result: [b], meta: {}})
-    res.send({ result: [b], meta: {}})
+    res.send({ data: [b], meta: {}})
   } catch (e) {
     red('error', e)
     res.status(400).send(e)
@@ -49,7 +46,7 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
   try {
     const events = await find('events', {})
-    res.send({ result: events })
+    res.send({ data: events, meta: {} })
   } catch (e) {
     res.status(400).send(e)
   }
@@ -65,7 +62,7 @@ router.get('/:id', async (req, res) => {
     if (!event) {
       return res.status(404).send()
     }
-    res.send({ result: event })
+    res.send({ data: event, meta: {} })
 
   } catch (e) {
     res.status(400).send(e)
@@ -82,7 +79,7 @@ router.delete('/:id', async (req, res) => {
     if (!event) {
       return res.status(404).send()
     }
-    res.send(JSON.stringify( { result: event }))
+    res.send({ data: event, meta: {} })
   } catch (e) {
     res.status(400).send()
   }
@@ -107,7 +104,7 @@ router.patch('/:id', async (req, res) => {
     if (!eventToReturn) {
       return res.status(404).send()
     }
-    res.send(JSON.stringify({ result: eventToReturn }))
+    res.send({ data: eventToReturn, meta: {} })
   } catch (e) {
     red('catch', e)
     res.status(400).send()

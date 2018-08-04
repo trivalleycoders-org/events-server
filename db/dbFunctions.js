@@ -47,7 +47,7 @@ export const insert = async (collection, data) => {
     const client = await MongoClient.connect(url(), { useNewUrlParser: true })
     const db = await client.db(database())
     const ret = await db.collection(collection).insert(data)
-    return ret
+    return { data: ret.ops, meta: { n: 1 } }
   }
   catch (e) {
     redf('ERROR: dbFunctions.insert', e)
