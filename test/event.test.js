@@ -1,20 +1,23 @@
 import 'babel-polyfill'
 import request from 'supertest'
-import {expect} from 'chai'
+import { expect } from 'chai'
 import {ObjectID} from 'mongodb'
 import app from '../server/server'
 import {yellow, blue, green, red, greenf, redf} from '../logger/'
+import { dropCollection, find, insert } from '../db'
 // import { fiveEvents } from './fixtures/fiveEvents'
-import { oneNewEvent } from './fixtures/oneNewEvent'
+import { oneNewEventIn, oneNewEventOut } from './fixtures/oneNewEvent'
+import { omit } from 'ramda'
+
 require('dotenv').config()
 
 const util = require('util')
 const setTimeoutPromise = util.promisify(setTimeout)
 
 const MongoClient = require('mongodb').MongoClient
-const database = 'EventsTest'
+const database = process.env.DATABASE
 const collection = 'events'
-const url = process.env.MONGODB_URI
+const uri = process.env.MONGODB_URI
 
 after(async () => {
   if (!process.env.WATCH) {
@@ -26,46 +29,23 @@ after(async () => {
 
 
 describe('event tests', async () => {
-  yellow('database', database)
-  let db
-  try {
-    greenf('connecting ...')
-    const client = await MongoClient.connect(url, { useNewUrlParser: true })
-    db = await client.db(database)
-  }
-  catch (e) {
-    redf('ERROR connecting', e)
-  }
-
   describe('POST /events', async () => {
     before(async () => {
-      try {
-        await db.collection('events').drop()
-      }
-      catch (e) {
-        redf('unknown error dropping collection')
-      }
+        await dropCollection('events')
     })
-    const res = await request(app).post('/events').send(oneNewEvent)
-    expect(200)
-    yellow('res.body', res.body)
+    it('add 1 event', async () => {
+      const res = await request(app).post('/events').send(oneNewEventIn)
+      expect(200)
+      expect(res.body.result.length).to.equal(1)
+      const result = res.body.result[0]
+      const newEvent = omit(['_id'], result)
+      expect(oneNewEventOut).to.deep.equal(newEvent)
+    })
+
+  })
+
+  describe('PATCH /events', async () => {
+
   })
 
 })
-
-
-// old
-// describe('POST /events', async () => {
-//   yellow('two')
-//   describe('should insert 5 members', async () => {
-//     const ret = await db.collection('events').insertMany(fiveEvents)
-//     // const ret = db.collection('events').insertMany(fiveEvents)
-//     // yellow('ret', ret.result)
-//     // drop the existing collection
-//     const drop = await db.collection('events').drop()
-//     if (!drop) {
-//       redf('unknown error dropping collection')
-//     }
-
-//   })
-// })

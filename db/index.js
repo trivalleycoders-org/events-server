@@ -1,6 +1,7 @@
 import Mongoose from 'mongoose'
 import { yellowf, greenf, redf, yellow } from '../logger'
 Mongoose.Promise = global.Promise
+import { dropCollection, find, insert } from './dbFunctions'
 
 const readyState = () => {
   const state = Mongoose.connection.readyState
@@ -22,10 +23,10 @@ const readyState = () => {
   }
 }
 
-export const connectToMongo = () => {
+const connectToMongo = () => {
     readyState()
     // await Mongoose.connect(process.env.MONGODB_URI)
-    yellow('URI', process.env.MONGODB_URI)
+    // yellow('URI', process.env.MONGODB_URI)
     Mongoose.connect(process.env.MONGODB_URI)
     .then(() => {
       readyState()
@@ -38,4 +39,6 @@ export const connectToMongo = () => {
 
 }
 
-export default { connectToMongo }
+export { connectToMongo, dropCollection, find, insert }
+
+
