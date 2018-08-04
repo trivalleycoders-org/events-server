@@ -4,9 +4,7 @@
   "description": "server for rotary project",
   "scripts": {
     "start": "SET \"NODE_ENV=development\" && nodemon server/server.js --exec babel-node || export NODE_ENV=development && nodemon server/server.js --exec babel-node",
-    "test-orig": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha --compilers js:babel-core/register server/**/*.test.js ",
-    "test-v2": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha --require babel-core/register server/**/*.test.js ",
-    "test": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha",
+    "test": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha --require babel-register",
     "build": "babel . -d dist --presets es2015,stage-2 --ignore spec.js,node_modules",
     "serve": "node dist/server.js",
     "start_babel": "babel-node server/server.js --preset=babel-preset-es2015",
