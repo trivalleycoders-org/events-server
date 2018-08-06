@@ -1,51 +1,15 @@
+import { dbName, mongoUrl } from './config'
+import { objectIdFromHexString } from './helpers'
 
 const MongoClient = require('mongodb').MongoClient
-require('dotenv').config()
+
 /* Dev */
 import { yellow, redf } from '../logger'
-import { Z_FILTERED } from 'zlib';
-
-const nodeEnv = process.env.NODE_ENV
-
-const url = () => {
-
-  switch (nodeEnv) {
-    case 'test':
-    case 'development':
-      return 'mongodb://localhost:27017'
-    case 'production':
-      return 'TBD'
-  }
-}
-
-const database = () => {
-  switch (nodeEnv) {
-    case 'test':
-      return 'EventsTest'
-    case 'development':
-      return 'EventsDev'
-    case 'production':
-      return 'Events'
-  }
-}
-
-export const find = async (collection, query, project = {}) => {
-  try {
-    const client = await MongoClient.connect(url(), { useNewUrlParser: true })
-    const db = await client.db(database())
-    const ret = await db.collection(collection).find(query).project(project).toArray()
-  return ret
-  }
-  catch (e) {
-    redf('ERROR: dbFunctions.find', e)
-  }
-
-}
 
 export const insert = async (collection, data) => {
   try {
-    const client = await MongoClient.connect(url(), { useNewUrlParser: true })
-    const db = await client.db(database())
+    const client = await MongoClient.connect(mongoUrl, { useNewUrlParser: true })
+    const db = await client.db(dbName)
     const ret = await db.collection(collection).insert(data)
     return { data: ret.ops, meta: { n: 1 } }
   }
@@ -57,8 +21,8 @@ export const insert = async (collection, data) => {
 
 export const dropCollection = async (collection) => {
   try {
-    const client = await MongoClient.connect(url(), { useNewUrlParser: true })
-    const db = await client.db(database())
+    const client = await MongoClient.connect(mongoUrl, { useNewUrlParser: true })
+    const db = await client.db(dbName)
     const ret = await db.collection(collection).drop()
     yellow('dbFunctions.dropCollection: ret', ret)
   }
@@ -67,18 +31,31 @@ export const dropCollection = async (collection) => {
   }
 }
 
-export const findOneAndUpdate = async (
-  collection,
-  filter,
-  update,
-  projection = {},
-  returnOriginal = true
-) => {
+export const findById = async (collection, id, project = {}) => {
   try {
-    const client = await MongoClient.connect(url(), { useNewUrlParser: true })
-    const db = await client.db(database())
-    const options = { projection, returnOriginal }
-    const ret = await db.collection(collection).findOneAndUpdate(filter, update, options)
+    const objId = objectIdFromHexString(id)
+    const client = await MongoClient.connect(mongoUrl, { useNewUrlParser: true })
+    const db = await client.db(dbName)
+    const ret = await db.collection(collection).find({ _id: objId }).project(project).toArray()
+  return ret
+  }
+  catch (e) {
+    redf('ERROR: dbFunctions.find', e)
+  }
+
+}
+
+export const findOneAndUpdate = async ( collection, id, filter, returnOriginal = false ) => {
+  try {
+    const objId = objectIdFromHexString(id)
+    const client = await MongoClient.connect(mongoUrl, { useNewUrlParser: true })
+    const db = await client.db(dbName)
+    const ret = await db.collection(collection).findOneAndUpdate(
+      { _id: objId},
+      // { organization: 'BRIIA'},
+      { $set: filter },
+      { returnOriginal: returnOriginal }
+    )
     yellow('dbFunctions.findOneAndUpdate: ret', ret)
     return ret
   }

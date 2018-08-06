@@ -7,7 +7,8 @@ import {yellow, blue, green, red, greenf, redf} from '../logger/'
 import { dropCollection, find, insert } from '../db'
 // import { fiveEvents } from './fixtures/fiveEvents'
 import { newEventData , addedEvent } from './fixtures/oneEvent'
-import { omit } from 'ramda'
+import { omit, clone } from 'ramda'
+import { findOneAndUpdate } from '../db/dbFunctions'
 
 require('dotenv').config()
 
@@ -44,14 +45,33 @@ describe('event tests', async () => {
 
   // })
 
+
+  /*
+      add an event
+      send an update
+      check for update in returned event
+  */
   describe('PATCH /events', async () => {
+    let eventBefore
+    let eventBefore_id
+    let eventAfter
     before(async () => {
       await dropCollection('events')
       const ret = await insert('events', addedEvent)
-      yellow('ret', ret.data[0])
+      eventBefore = ret.data[0]
+      eventBefore_id = addedEvent._id
+      eventAfter = clone(eventBefore)
+      // change organization from BRIIA to 'new org'
+      eventAfter.organization = 'new org'
+
     })
     it('dummy',  async () => {
-      expect(1).to.equal(1)
+      expect(eventBefore.organization).to.equal('BRIIA')
+      const ret = await request(app).patch(`/events/${eventBefore_id}`).send(eventAfter)
+      // yellow('ret', ret)
+
+      expect(200)
+
     })
 
   })

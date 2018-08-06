@@ -2,19 +2,21 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import morgan from 'morgan'
-import {connectToMongo} from '../db'
 import { greenf, redf, yellow } from '../logger'
 import events from '../routes/events-route'
 import images from '../routes/image-route'
 import tags from '../routes/tags-route'
 import search from '../routes/search-route'
 import location from '../routes/location-route'
-import '../config'
+import 'babel-polyfill'
 
 // green('node env=', process.env.NODE_ENV)
 const app = express()
 const port = process.env.PORT
 
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').load()
+}
 
 // if (process.env.NODE_ENV !== 'test') {
 //   yellow('server.env', process.env.NODE_ENV)

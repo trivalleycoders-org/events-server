@@ -4,13 +4,11 @@ import fetch from 'node-fetch'
 /* User */
 import Event from '../models/event'
 import PostalCode from '../models/postalCode'
-import { isValidObjectID, objectIdFromHexString } from '../db/utils'
-require('dotenv').config()
 
 /* Dev */
 import { red, yellow } from '../logger'
 
-import { find, insert } from '../db'
+import { find, insert, findOneAndUpdate } from '../db'
 
 const router = express.Router()
 // const hasTagsField = has('tags')
@@ -54,9 +52,6 @@ router.get('/', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
   const id = req.params.id
-  if (!isValidObjectID(id)) {
-    return res.status(404).send()
-  }
   try {
     let event = await Event.findById(id)
     if (!event) {
@@ -71,9 +66,6 @@ router.get('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   const id = req.params.id
-  if (!isValidObjectID(id)) {
-    return res.status(404).send()
-  }
   try {
     let event = await Event.findByIdAndRemove(id)
     if (!event) {
@@ -90,15 +82,12 @@ router.patch('/:id', async (req, res) => {
   try {
     const id = req.params.id
     // yellow('patch: id', id)
-    if (!isValidObjectID(id)) {
-      return res.status(404).send()
-    }
     const eventSent = req.body
     // yellow('patch: body', eventSent)
-    const eventToReturn = await Event.findByIdAndUpdate(
-      id,
+    const eventToReturn = await findOneAndUpdate(
+      'events',
+      {_id: id},
       { $set: eventSent },
-      { new: true }
     )
     // yellow('patch: returned event', eventToReturn)
     if (!eventToReturn) {
@@ -111,6 +100,5 @@ router.patch('/:id', async (req, res) => {
   }
 
 })
-
 
 export default router
