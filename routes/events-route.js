@@ -23,7 +23,6 @@ router.post('/', async (req, res) => {
       'events',
       b
     )
-    red("what's returned: inserted", inserted)
     res.send({ data: [b], meta: {}})
   } catch (e) {
     red('error', e)
@@ -75,8 +74,8 @@ router.patch('/:id', async (req, res) => {
     const eventSent = req.body
     const eventToReturn = await findOneAndUpdate(
       'events',
-      {_id: id},
-      { $set: eventSent },
+      id,
+      eventSent,
     )
     if (!eventToReturn) {
       return res.status(404).send()
