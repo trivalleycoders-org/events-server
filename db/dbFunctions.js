@@ -6,7 +6,7 @@ const MongoClient = require('mongodb').MongoClient
 /* Dev */
 import { yellow, redf } from '../logger'
 
-export const insert = async (collection, data) => {
+export const insertOne = async (collection, data) => {
   try {
     const client = await MongoClient.connect(mongoUrl, { useNewUrlParser: true })
     const db = await client.db(dbName)
@@ -45,6 +45,37 @@ export const findById = async (collection, id, project = {}) => {
 
 }
 
+export const find = async (collection, query, project = {}) => {
+  try {
+    const client = await MongoClient.connect(mongoUrl, { useNewUrlParser: true })
+    const db = await client.db(dbName)
+    const ret = await db.collection(collection).find(query).project(project).toArray()
+  return ret
+  }
+  catch (e) {
+    redf('ERROR: dbFunctions.find', e)
+  }
+
+}
+
+/*
+    UNTESTED
+*/
+export const findOneAndDelete = async (collection, id) => {
+  yellow('id', id)
+  try {
+    const objId = objectIdFromHexString(id)
+    const client = await MongoClient.connect(mongoUrl, { useNewUrlParser: true })
+    const db = await client.db(dbName)
+    const ret = await db.collection(collection).findOneAndDelete({ _id: objId })
+    yellow('ret', ret)
+    return ret
+  }
+  catch (e) {
+    redf('ERROR: dbFunctions.findOneAndDelete', e)
+  }
+}
+
 export const findOneAndUpdate = async ( collection, id, filter, returnOriginal = false ) => {
   try {
     const objId = objectIdFromHexString(id)
@@ -56,7 +87,6 @@ export const findOneAndUpdate = async ( collection, id, filter, returnOriginal =
       { $set: filter },
       { returnOriginal: returnOriginal }
     )
-    yellow('dbFunctions.findOneAndUpdate: ret', ret)
     return ret
   }
   catch (e) {

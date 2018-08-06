@@ -17,7 +17,6 @@ yellow('database', dbName)
 
 export const mongoUrl = (() => {
   if (nodeEnv === 'development') {
-    redf('TODO', 'change next line when done')
     return process.env.MONGODB_URL_DEV
   } else if (nodeEnv === 'test') {
     return process.env.MONGODB_URL_TEST

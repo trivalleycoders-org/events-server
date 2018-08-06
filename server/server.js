@@ -5,7 +5,7 @@ import morgan from 'morgan'
 import { greenf, redf, yellow } from '../logger'
 import events from '../routes/events-route'
 import images from '../routes/image-route'
-import tags from '../routes/tags-route'
+// import tags from '../routes/tags-route'
 import search from '../routes/search-route'
 import location from '../routes/location-route'
 import 'babel-polyfill'
@@ -29,7 +29,7 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(morgan('dev'))
 app.use('/events', events)
 app.use('/images', images)
-app.use('/tags', tags)
+// app.use('/tags', tags)
 app.use('/search', search)
 app.use('/location', location)
 app.get('/', (req, res) => {
