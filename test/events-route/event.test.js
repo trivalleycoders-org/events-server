@@ -2,23 +2,17 @@ import 'babel-polyfill'
 import request from 'supertest'
 import { expect } from 'chai'
 import {ObjectID} from 'mongodb'
-import app from '../server/server'
-import {yellow, blue, green, red, greenf, redf} from '../logger/'
-import { dropCollection, find, insert } from '../db'
+import app from '../../server/server'
+import {yellow, blue, green, red, greenf, redf} from '../../logger/'
+import { findOneAndUpdate, dropCollection, find, insertOne } from '../../db'
 // import { fiveEvents } from './fixtures/fiveEvents'
 import { newEventData , addedEvent } from './fixtures/oneEvent'
 import { omit, clone } from 'ramda'
-import { findOneAndUpdate } from '../db/dbFunctions'
 
 require('dotenv').config()
 
 const util = require('util')
 const setTimeoutPromise = util.promisify(setTimeout)
-
-const MongoClient = require('mongodb').MongoClient
-const database = process.env.DATABASE
-const collection = 'events'
-const uri = process.env.MONGODB_URI
 
 after(async () => {
   if (!process.env.WATCH) {
@@ -27,7 +21,6 @@ after(async () => {
     })
   }
 })
-
 
 describe('event tests', async () => {
   describe('POST /events', async () => {
@@ -57,7 +50,7 @@ describe('event tests', async () => {
     let eventAfter
     before(async () => {
       await dropCollection('events')
-      const ret = await insert('events', addedEvent)
+      const ret = await insertOne('events', addedEvent)
       eventBefore = ret.data[0]
       eventBefore_id = addedEvent._id
       eventAfter = clone(eventBefore)
