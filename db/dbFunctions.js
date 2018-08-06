@@ -12,10 +12,14 @@ const returnError = (e) => {
 import { yellow, redf } from '../logger'
 
 export const insertOne = async (collection, data) => {
+  yellow('insertOne: collection', collection)
+  yellow('insertOne: data', data)
+  yellow('insertOne: mongoUrl', mongoUrl)
+  yellow('insertOne: dbName', dbName)
   try {
     const client = await MongoClient.connect(mongoUrl)
     const db = await client.db(dbName)
-    const ret = await db.collection(collection).insert(data)
+    const ret = await db.collection(collection).insertOne(data)
     return { data: ret.ops, meta: { n: 1 } }
   }
   catch (e) {
