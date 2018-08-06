@@ -30,8 +30,8 @@ describe('event tests', async () => {
     it('add 1 event', async () => {
       const res = await request(app).post('/events').send(newEventData)
       expect(200)
-      expect(res.body.result.length).to.equal(1)
-      const result = res.body.result[0]
+      expect(res.body.data.length).to.equal(1)
+      const result = res.body.data[0]
       const newEvent = omit(['_id'], result)
       expect(addedEvent).to.deep.equal(newEvent)
     })
