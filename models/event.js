@@ -1,24 +1,35 @@
 import mongoose from 'mongoose'
 
-let phoneSchema = new mongoose.Schema({
-  phoneType: {
+let postalCodeSchema = new mongoose.Schema({
+  postalCode: {
     type: String,
-    enum: ['Home', 'Work', 'Mobile']
   },
-  phoneNumber: {
+  displayString: {
     type: String
   }
 })
 
 const eventSchema = new mongoose.Schema({
+  category: {
+    type: String,
+  },
+  free: {
+    type: Boolean,
+  },
   endDateTime: {
     type: Date,
   },
   imageUrl: {
     type: String,
   },
+  linkToUrl: {
+    type: String,
+  },
   organization: {
     type: String,
+  },
+  postalCode: {
+    type: postalCodeSchema,
   },
   price: {
     type: Number,
@@ -30,9 +41,10 @@ const eventSchema = new mongoose.Schema({
   title: {
     type: String,
   },
-  venu: {
+  venueName: {
     type: String,
   },
+
 })
 
 let Event = mongoose.model('Event', eventSchema)
