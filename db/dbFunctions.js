@@ -38,7 +38,7 @@ export const dropCollection = async (collection) => {
     return ret
   }
   catch (e) {
-    redf('ERROR: dbFunctions.dropCollection', e.message)
+    redf('ERROR: dbFunctions.dropCollection', e)
     return returnError(e)
   }
 }
