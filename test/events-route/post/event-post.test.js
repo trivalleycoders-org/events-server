@@ -23,6 +23,8 @@ after(async () => {
 describe('POST /events', async () => {
   before(async () => {
       await dropCollection('events')
+      await dropCollection('postalCodes')
+
   })
   it('add 1 event', async () => {
     const res = await request(app).post('/events').send(eventToPost)
