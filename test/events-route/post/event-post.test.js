@@ -30,7 +30,7 @@ describe('POST /events', async () => {
     expect(200)
     const data = res.body.data
     expect(data.length).to.equal(1)
-    // yellow('data', data)
+    yellow('data', data)
     const returnedEvent = data[0]
     // yellow('returnedEvent', returnedEvent)
     // remove _id so can compare
