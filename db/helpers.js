@@ -3,7 +3,10 @@ import { omit } from 'ramda'
 import { yellow, redf } from '../logger';
 
 const isValidObjectID = (id) => {
+  yellow('id', id)
   const isValid = ObjectID.isValid(id)
+  yellow('isValid', isValid)
+
   return isValid
 }
 

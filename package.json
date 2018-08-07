@@ -7,10 +7,10 @@
     "start-old": "SET \"NODE_ENV=development\" && nodemon server/server.js --exec babel-node || export NODE_ENV=development && nodemon server/server.js --exec babel-node",
     "start": "export NODE_ENV=development || SET \"NODE_ENV=development\" && nodemon --exec npm run babel-node -- server/server.js",
     "test": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha --require babel-register",
+    "test-watch": "export WATCH='watch' && nodemon --exec 'npm test'",
     "build": "babel . -d dist --presets es2015,stage-2 --ignore spec.js,node_modules",
     "serve": "node dist/server.js",
     "start_babel": "babel-node server/server.js --preset=babel-preset-es2015",
-    "test-watch": "export WATCH='watch' && nodemon --exec 'npm test'",
     "lint": "eslint ."
   },
   "engines": {

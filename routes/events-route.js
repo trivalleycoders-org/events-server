@@ -24,7 +24,7 @@ router.post('/', async (req, res) => {
     const a = omit(['postalCode_id'], event)
     const b = merge(a, postalData[0])
 
-    yellow('b', b)
+    // yellow('b', b)
     const inserted = await insertOne(
       'events',
       b

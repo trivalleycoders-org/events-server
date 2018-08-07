@@ -24,10 +24,10 @@ router.delete('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
   try {
     const tag = req.body
-    yellow('post: tag', tag)
+    // yellow('post: tag', tag)
     let nt = new Tag(tag)
     const tagAdded = await nt.save()
-    yellow('tagAdded', tagAdded)
+    // yellow('tagAdded', tagAdded)
     res.send(tagAdded)
   } catch (e) {
     // red('events.route: post', e)

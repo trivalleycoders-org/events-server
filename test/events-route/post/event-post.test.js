@@ -23,6 +23,8 @@ after(async () => {
 describe('POST /events', async () => {
   before(async () => {
       await dropCollection('events')
+      await dropCollection('postalCodes')
+
   })
   it('add 1 event', async () => {
     const res = await request(app).post('/events').send(eventToPost)
@@ -30,7 +32,7 @@ describe('POST /events', async () => {
     expect(200)
     const data = res.body.data
     expect(data.length).to.equal(1)
-    // yellow('data', data)
+    yellow('data', data)
     const returnedEvent = data[0]
     // yellow('returnedEvent', returnedEvent)
     // remove _id so can compare
