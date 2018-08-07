@@ -19,9 +19,9 @@ const executeAggregate = async (query) => {
 
 router.get('/postal-codes/:startsWith', async (req, res) => {
   const startsWith = req.params.startsWith
-  yellow('startsWith', startsWith)
+  // yellow('startsWith', startsWith)
   const re = new RegExp(`^${startsWith}`)
-  yellow('re', re)
+  // yellow('re', re)
 
   const match1 = {
     $match: { 'postalCode': { $regex: re , $options: 'im' } }
@@ -41,9 +41,9 @@ router.get('/postal-codes/:startsWith', async (req, res) => {
     match1,
     project1,
   ]
-  yellow('q', q)
+  // yellow('q', q)
   const ret = await executeAggregate(q)
-  yellow('ret', ret)
+  // yellow('ret', ret)
   res.send(JSON.stringify(ret))
 })
 
@@ -61,7 +61,7 @@ router.get('/', async (req, res) => {
 
 router.get('/cities/:startsWith', async (req, res) => {
   const startsWith = req.params.startsWith
-  yellow('startsWith', startsWith)
+  // yellow('startsWith', startsWith)
 
   const re = new RegExp(`^${startsWith}`)
   const match1 = {
@@ -80,7 +80,7 @@ router.get('/cities/:startsWith', async (req, res) => {
   ]
 
   const ret = await executeAggregate(q)
-  yellow('ret', ret)
+  // yellow('ret', ret)
   res.send(JSON.stringify(ret))
 })
 

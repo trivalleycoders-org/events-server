@@ -12,10 +12,10 @@ const returnError = (e) => {
 import { yellow, redf } from '../logger'
 
 export const insertOne = async (collection, data) => {
-  yellow('insertOne: collection', collection)
-  yellow('insertOne: data', data)
-  yellow('insertOne: mongoUrl', mongoUrl)
-  yellow('insertOne: dbName', dbName)
+  // yellow('insertOne: collection', collection)
+  // yellow('insertOne: data', data)
+  // yellow('insertOne: mongoUrl', mongoUrl)
+  // yellow('insertOne: dbName', dbName)
   try {
     const client = await MongoClient.connect(mongoUrl)
     const db = await client.db(dbName)
@@ -76,13 +76,13 @@ export const find = async (collection, query, project = {}) => {
     UNTESTED
 */
 export const findOneAndDelete = async (collection, id) => {
-  yellow('id', id)
+  // yellow('id', id)
   try {
     const objId = objectIdFromHexString(id)
     const client = await MongoClient.connect(mongoUrl)
     const db = await client.db(dbName)
     const ret = await db.collection(collection).findOneAndDelete({ _id: objId })
-    yellow('ret', ret)
+    // yellow('ret', ret)
     return ret
   }
   catch (e) {

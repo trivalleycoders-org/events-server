@@ -5,7 +5,7 @@ import { red, yellow } from '../logger'
 const router = express.Router()
 
 router.get('/', async (req, res) => {
-  yellow('search term', req.query.searchTerm)
+  // yellow('search term', req.query.searchTerm)
   const searchTerm = req.query.searchTerm
   // const pattern = '.*' + searchTerm.substr(1).slice(0, -1) + '.*'
   try {
