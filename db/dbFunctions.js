@@ -38,8 +38,13 @@ export const dropCollection = async (collection) => {
     return ret
   }
   catch (e) {
-    redf('ERROR: dbFunctions.dropCollection', e)
-    return returnError(e)
+    if (e.message = 'ns not found') {
+      return true
+    } else {
+      redf('ERROR: dbFunctions.dropCollection', e.message)
+      return returnError(e)
+    }
+
   }
 }
 
