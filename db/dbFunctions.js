@@ -1,5 +1,5 @@
 import { dbName, mongoUrl } from './config'
-import { objectIdFromHexString, removeIdProp } from './helpers'
+import { objectIdFromHexString, removeIdProp, getObjectId } from './helpers'
 /* Dev */
 import { yellow, redf } from '../logger'
 
@@ -15,7 +15,6 @@ export const dropCollection = async (collection) => {
     const client = await MongoClient.connect(mongoUrl)
     const db = await client.db(dbName)
     const ret = await db.collection(collection).drop()
-    // yellow('dbFunctions.dropCollection: ret', ret)
     return ret
   }
   catch (e) {
@@ -34,7 +33,6 @@ export const find = async (collection, query = {}, project = {}) => {
     const client = await MongoClient.connect(mongoUrl)
     const db = await client.db(dbName)
     const ret = await db.collection(collection).find(query).project(project).toArray()
-    // yellow('ret', ret)
     return { data: ret, meta: {} }
   }
   catch (e) {
@@ -45,13 +43,11 @@ export const find = async (collection, query = {}, project = {}) => {
 }
 
 export const findById = async (collection, id, project = {}) => {
-  // yellow('id', id)
   try {
-    const objId = typeof id === 'object' ? id : objectIdFromHexString(id)
+    const objId = getObjectId(id)
     const client = await MongoClient.connect(mongoUrl)
     const db = await client.db(dbName)
     const ret = await db.collection(collection).find({ _id: objId }).project(project).toArray()
-    yellow('ret', ret)
     return { data: ret, meta: {} }
   }
   catch (e) {
@@ -61,18 +57,13 @@ export const findById = async (collection, id, project = {}) => {
 
 }
 
-/*
-    UNTESTED
-*/
 export const findOneAndDelete = async (collection, id) => {
-  // yellow('id', id)
   try {
-    const objId = objectIdFromHexString(id)
+    const objId = getObjectId(id)
     const client = await MongoClient.connect(mongoUrl)
     const db = await client.db(dbName)
     const ret = await db.collection(collection).findOneAndDelete({ _id: objId })
-    // yellow('ret', ret)
-    return ret
+    return { data: [ret.value], meta: {} }
   }
   catch (e) {
     redf('ERROR: dbFunctions.findOneAndDelete', e.message)
@@ -84,16 +75,15 @@ export const findOneAndUpdate = async ( collection, id, filter, returnOriginal =
   try {
     // if the filter has the _id prop, remove it
     const cleanFilter = removeIdProp(filter)
-    const objId = objectIdFromHexString(id)
+    const objId = getObjectId(id)
     const client = await MongoClient.connect(mongoUrl)
     const db = await client.db(dbName)
     const ret = await db.collection(collection).findOneAndUpdate(
       { _id: objId},
-      // { organization: 'BRIIA'},
       { $set: cleanFilter },
       { returnOriginal: returnOriginal }
     )
-    return ret
+    return { data: [ret.value], meta: {} }
   }
   catch (e) {
     redf('ERROR: dbFunctions.findOneAndUpdate', e)
@@ -102,10 +92,6 @@ export const findOneAndUpdate = async ( collection, id, filter, returnOriginal =
 }
 
 export const insertOne = async (collection, data) => {
-  // yellow('insertOne: collection', collection)
-  // yellow('insertOne: data', data)
-  // yellow('insertOne: mongoUrl', mongoUrl)
-  // yellow('insertOne: dbName', dbName)
   try {
     const client = await MongoClient.connect(mongoUrl)
     const db = await client.db(dbName)
@@ -127,7 +113,7 @@ export const insertMany = async (collection, data) => {
     return { data: ret.ops, meta: { n: 1 } }
   }
   catch (e) {
-    redf('ERROR: dbFunctions.insert', e.message)
+    redf('ERROR: dbFunctions.insertMany', e.message)
     return returnError(e)
   }
 }

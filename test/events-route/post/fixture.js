@@ -6,7 +6,7 @@ export const eventToPost = {
   imageUrl: 'https://s3-us-west-2.amazonaws.com/photo-app-tvc/briia.jpg',
   linkToUrl: 'http://briia.io',
   organization: 'BRIIA',
-  postalCode_id: '5b5f6f52222be42bb919c008',
+  postalCode_id: 'blank',
   price: 75,
   stateCode: 'CA',
   startDateTime: '2018-06-12T16:00:00.000Z',
@@ -33,9 +33,9 @@ export const eventAfter = {
   venueName: 'Dublin Concert Hall',
 }
 
-const postalCodes = [
+export const postalCodes = [
   {
-      _id: '5b5f6f52222be42bb919bfb3',
+      // _id: '5b5f6f52222be42bb919bfb3',
       postalCode: '94507',
       cityName: 'Alamo',
       stateName: 'California',
@@ -47,7 +47,7 @@ const postalCodes = [
       accuracy: 4
   },
   {
-      _id: '5b5f6f52222be42bb919bfb4',
+      // _id: '5b5f6f52222be42bb919bfb4',
       postalCode: '94506',
       cityName: 'Danville',
       stateName: 'California',
@@ -59,7 +59,7 @@ const postalCodes = [
       accuracy: 4
   },
   {
-      _id: '5b5f6f52222be42bb919bfb5',
+      // _id: '5b5f6f52222be42bb919bfb5',
       postalCode: '94509',
       cityName: 'Antioch',
       stateName: 'California',
@@ -71,7 +71,7 @@ const postalCodes = [
       accuracy: 4
   },
   {
-      _id: '5b5f6f52222be42bb919bfbc',
+      // _id: '5b5f6f52222be42bb919bfbc',
       postalCode: '94511',
       cityName: 'Bethel Island',
       stateName: 'California',
@@ -83,7 +83,7 @@ const postalCodes = [
       accuracy: 4
   },
   {
-    _id: '5b5f6f52222be42bb919c008',
+    // _id: '5b5f6f52222be42bb919c008',
     postalCode: '94582',
     cityName: 'San Ramon',
     stateName: 'California',

@@ -3,9 +3,12 @@ import request from 'supertest'
 import { expect } from 'chai'
 import app from '../../../server/server'
 import {yellow, blue, green, red, greenf, redf} from '../../../logger/'
-import { findOneAndUpdate, dropCollection, find, insertOne } from '../../../db'
-import { eventToPost, eventAfter } from './fixture'
-import { omit, clone } from 'ramda'
+import {
+  dropCollection,
+  insertMany
+} from '../../../db'
+import { eventToPost, eventAfter, postalCodes } from './fixture'
+import { omit } from 'ramda'
 
 require('dotenv').config()
 
@@ -27,14 +30,19 @@ describe('POST /events', async () => {
 
   })
   it('add 1 event', async () => {
+    const insertedData = await insertMany('postalCodes', postalCodes)
+    const postalData = insertedData.data
+    expect(postalData.length).to.equal(5)
+    // get postalCode _id for San Ramon 94582
+    const sanRamon = postalData.find((c => c.postalCode === '94582'))
+    const postal_id = sanRamon._id
+    // mod data to have a _id that actually exists
+    eventToPost.postalCode_id = postal_id
     const res = await request(app).post('/events').send(eventToPost)
-    // yellow('res', res.body)
     expect(200)
     const data = res.body.data
     expect(data.length).to.equal(1)
-    yellow('data', data)
     const returnedEvent = data[0]
-    // yellow('returnedEvent', returnedEvent)
     // remove _id so can compare
     const eventToCompare = omit(['_id'], returnedEvent)
     expect(eventAfter).to.deep.equal(eventToCompare)

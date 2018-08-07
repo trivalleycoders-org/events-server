@@ -10,21 +10,15 @@ const router = express.Router()
 router.post('/', async (req, res) => {
   try {
     const event = req.body
-    // yellow('posted event data', event)
     const postalCode_id = event.postalCode_id
-    // yellow('postalCode_id', postalCode_id)
-
     const postalData = await findById(
       'postalCodes',
       postalCode_id,
       { cityName: 1, postalCode: 1, stateCode: 1, _id: 0 }
     )
-
     // Remove existing postCode and and merge
     const a = omit(['postalCode_id'], event)
-    const b = merge(a, postalData[0])
-
-    // yellow('b', b)
+    const b = merge(a, postalData.data[0])
     const inserted = await insertOne(
       'events',
       b
