@@ -13,7 +13,7 @@ const executeAggregate = async (query) => {
   const client = await MongoClient.connect(url, { useNewUrlParser: true })
   const db = await client.db(database)
   const ret = await db.collection(collection).aggregate(query).toArray()
-  return ret
+  return { data: ret, meta: {} }
 }
 
 
@@ -47,18 +47,8 @@ router.get('/postal-codes/:startsWith', async (req, res) => {
   res.send(JSON.stringify(ret))
 })
 
-router.get('/', async (req, res) => {
-  // const r1 = await fetch('http://github.com/users/github')
-  // res.send(JSON.stringify(r1))
-  // res.send('route working')
-  const url0 = 'https://github.com/'
-  const url1 = 'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=dublin+library&key=AIzaSyChA326uxlXZXCiaqEYxdn4eTJTt3OhPyE&session_token=1234567890'
-
-  fetch(url1)
-	.then(res => res.text())
-	.then(body => res.send(body))
-})
-
+/* Cities
+    - not in use but may be in future
 router.get('/cities/:startsWith', async (req, res) => {
   const startsWith = req.params.startsWith
   // yellow('startsWith', startsWith)
@@ -83,5 +73,5 @@ router.get('/cities/:startsWith', async (req, res) => {
   // yellow('ret', ret)
   res.send(JSON.stringify(ret))
 })
-
+*/
 export default router
