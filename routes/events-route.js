@@ -33,7 +33,7 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
   try {
     const events = await find('events', {})
-    res.send({ data: events, meta: {} })
+    res.send(events)
   } catch (e) {
     res.status(400).send(e)
   }
@@ -46,7 +46,7 @@ router.get('/:id', async (req, res) => {
     if (!event) {
       return res.status(404).send()
     }
-    res.send({ data: event, meta: {} })
+    res.send(event)
 
   } catch (e) {
     res.status(400).send(e)
@@ -61,7 +61,7 @@ router.delete('/:id', async (req, res) => {
     if (!event) {
       return res.status(404).send()
     }
-    res.send({ data: event, meta: {} })
+    res.send(event)
   } catch (e) {
     res.status(400).send()
   }
@@ -80,7 +80,7 @@ router.patch('/:id', async (req, res) => {
     if (!eventToReturn) {
       return res.status(404).send()
     }
-    res.send({ data: eventToReturn, meta: {} })
+    res.send(eventToReturn)
   } catch (e) {
     red('catch', e)
     res.status(400).send()
