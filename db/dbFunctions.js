@@ -1,3 +1,11 @@
+/* Possible solutions to the repeated db code
+   - last two examples: https://stackoverflow.com/questions/24621940/how-to-properly-reuse-connection-to-mongodb-across-nodejs-application-and-module/24634454#24634454
+   - another solution but radically differnet approach: https://thecodebarbarian.com/managing-connections-with-the-mongodb-node-driver.html
+   - must read: https://www.mongodb.com/blog/post/the-modern-application-stack-part-2-using-mongodb-with-nodejs
+   - ** looks like a good answer: https://techsparx.com/nodejs/async/asynchronous-mongodb.html
+
+*/
+
 import { dbName, mongoUrl } from './config'
 import { objectIdFromHexString, removeIdProp, getObjectId } from './helpers'
 /* Dev */
