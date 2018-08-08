@@ -39,8 +39,21 @@ export const find = async (collection, query = {}, project = {}) => {
     redf('ERROR: dbFunctions.find', e.message)
     return returnError(e)
   }
-
 }
+
+export const search = async (collection, searchTerm, project) => {
+  try {
+    const client = await MongoClient.connect(mongoUrl)
+    const db = await client.db(dbName)
+    const ret = await db.collection(collection).find({ $text: { $search: searchTerm }}).project(project).sort({ score: { $meta: 'textScore' } }).toArray()
+    return { data: ret, meta: {} }
+  }
+  catch (e) {
+    redf('ERROR: dbFunctions.search', e.message)
+    return returnError(e)
+  }
+}
+
 
 export const findById = async (collection, id, project = {}) => {
   try {
