@@ -12,13 +12,9 @@ export const fiveEvents = [
     'endDateTime' : '2018-06-12T17:00:00.000Z',
     'venueName' : 'Dublin Concert Hall',
     'organization' : 'BRIIA',
-    'postalCode' : {
-        'postalCode' : '94582',
-        'cityName' : 'San Ramon',
-        'stateCode' : 'CA',
-        'latitude' : 37.7636,
-        'longitude' : -121.9155
-    }
+    'postalCode' : '94582',
+    'cityName' : 'San Ramon',
+    'stateCode' : 'CA',
   },
   {
     'tags' : [
@@ -34,13 +30,9 @@ export const fiveEvents = [
     'linkToUrl' : 'https://www.eventbrite.com/e/cal-esar-navigation-course-san-ramon-tickets-45330345283?aff=ebdssbcitybrowse',
     'price' : 25,
     'category' : 'battleDrone',
-    'postalCode' : {
-        'postalCode' : '94582',
-        'cityName' : 'San Ramon',
-        'stateCode' : 'CA',
-        'latitude' : 37.7636,
-        'longitude' : -121.9155
-    },
+    'postalCode' : '94582',
+    'cityName' : 'San Ramon',
+    'stateCode' : 'CA',
   },
   {
     'tags' : [
@@ -56,13 +48,9 @@ export const fiveEvents = [
     'linkToUrl' : 'http://trivalleycoders.com',
     'price' : 300,
     'category' : 'octocopter',
-    'postalCode' : {
-        'postalCode' : '94582',
-        'cityName' : 'San Ramon',
-        'stateCode' : 'CA',
-        'latitude' : 37.7636,
-        'longitude' : -121.9155
-    },
+    'postalCode' : '94582',
+    'cityName' : 'San Ramon',
+    'stateCode' : 'CA',
   },
   {
     'tags' : [
@@ -78,13 +66,9 @@ export const fiveEvents = [
     'linkToUrl' : 'https://www.eventbrite.com/e/ten-steps-to-building-a-better-business-plan-tickets-47292938452?aff=ebdssbcitybrowse',
     'price' : 450,
     'category' : 'quadcopter',
-    'postalCode' : {
-        'postalCode' : '94582',
-        'cityName' : 'San Ramon',
-        'stateCode' : 'CA',
-        'latitude' : 37.7636,
-        'longitude' : -121.9155
-    },
+    'postalCode' : '94582',
+    'cityName' : 'San Ramon',
+    'stateCode' : 'CA',
   },
   {
     'tags' : [
@@ -100,12 +84,8 @@ export const fiveEvents = [
     'linkToUrl' : 'https://www.eventbrite.com/e/srvef-raspberry-pi-jam-chs-tickets-45980349463',
     'price' : 240,
     'category' : 'battleDrone',
-    'postalCode' : {
-        'postalCode' : '94582',
-        'cityName' : 'San Ramon',
-        'stateCode' : 'CA',
-        'latitude' : 37.7636,
-        'longitude' : -121.9155
-    },
+    'postalCode' : '94582',
+    'cityName' : 'San Ramon',
+    'stateCode' : 'CA',
   }
 ]

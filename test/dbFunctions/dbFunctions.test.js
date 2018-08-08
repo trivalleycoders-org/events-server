@@ -1,7 +1,5 @@
 import 'babel-polyfill'
-import request from 'supertest'
 import { expect } from 'chai'
-import app from '../../server/server'
 import {yellow, blue, green, red, greenf, redf} from '../../logger/'
 import { people } from './fixture'
 import { find,
@@ -12,7 +10,6 @@ import { find,
   insertMany,
   insertOne,
 } from '../../db'
-import { ObjectID } from  'mongodb'
 require('dotenv').config()
 
 const util = require('util')

@@ -1,12 +1,11 @@
 import 'babel-polyfill'
 import request from 'supertest'
 import { expect } from 'chai'
-import {ObjectID} from 'mongodb'
 import app from '../../../server/server'
 import {yellow, blue, green, red, greenf, redf} from '../../../logger/'
-import { findOneAndUpdate, dropCollection, find, insertOne } from '../../../db'
+import { findOneAndUpdate, dropCollection, find, insertOne, insertMany } from '../../../db'
 // import { fiveEvents } from './fixtures/fiveEvents'
-import { newEventData , addedEvent } from './fixture'
+import { fiveEvents } from './fixture'
 import { omit, clone } from 'ramda'
 
 require('dotenv').config()
@@ -22,23 +21,14 @@ after(async () => {
   }
 })
 
-describe('PATCH /events', async () => {
-  let eventBefore
-  let eventBefore_id
-  let eventAfter
+describe.skip('GET /events', async () => {
   before(async () => {
     await dropCollection('events')
-    const ret = await insertOne('events', addedEvent)
-    eventBefore = ret.data[0]
-    eventBefore_id = addedEvent._id
-    eventAfter = clone(eventBefore)
-    eventAfter.organization = 'new org'
-
+    await insertMany('events', fiveEvents)
   })
-  it('dummy',  async () => {
+  it('should get ...',  async () => {
     expect(eventBefore.organization).to.equal('BRIIA')
     const ret = await request(app).patch(`/events/${eventBefore_id}`).send(eventAfter)
-    yellow('ret', ret.body)
     expect(200)
 
   })

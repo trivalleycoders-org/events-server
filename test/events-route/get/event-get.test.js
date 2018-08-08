@@ -1,7 +1,6 @@
 import 'babel-polyfill'
 import request from 'supertest'
 import { expect } from 'chai'
-import {ObjectID} from 'mongodb'
 import app from '../../../server/server'
 import {yellow, blue, green, red, greenf, redf} from '../../../logger/'
 import { findOneAndUpdate, dropCollection, find, insertOne } from '../../../db'
@@ -22,7 +21,7 @@ after(async () => {
   }
 })
 
-describe('PATCH /events', async () => {
+describe.skip('GET /events', async () => {
   let eventBefore
   let eventBefore_id
   let eventAfter
@@ -38,7 +37,6 @@ describe('PATCH /events', async () => {
   it('dummy',  async () => {
     expect(eventBefore.organization).to.equal('BRIIA')
     const ret = await request(app).patch(`/events/${eventBefore_id}`).send(eventAfter)
-    yellow('ret', ret.body)
     expect(200)
 
   })
