@@ -28,4 +28,4 @@ export const removeIdProp = (obj) => {
   return omit(['_id'], obj)
 }
 
-export default { objectIdFromHexString }
+export default { objectIdFromHexString }export default { objectIdFromHexString }
