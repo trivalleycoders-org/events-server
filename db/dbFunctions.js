@@ -117,6 +117,7 @@ export const insertOne = async (collection, data) => {
     const client = await MongoClient.connect(mongoUrl)
     const db = await client.db(dbName)
     const ret = await db.collection(collection).insertOne(data)
+    // yellow('ret', ret)
     return { data: ret.ops, meta: { n: 1 } }
   }
   catch (e) {
