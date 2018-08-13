@@ -4,8 +4,8 @@
   "description": "server for events project",
   "scripts": {
     "babel-node": "babel-node",
-    "start-old": "SET \"NODE_ENV=development\" && nodemon server/server.js --exec babel-node || export NODE_ENV=development && nodemon server/server.js --exec babel-node",
-    "start": "export NODE_ENV=development || SET \"NODE_ENV=development\" && nodemon --exec npm run babel-node -- server/server.js",
+    "wstart": "SET \"NODE_ENV=development\" && nodemon server/server.js --exec babel-node",
+    "start": "export NODE_ENV=development && nodemon --exec npm run babel-node -- server/server.js",
     "test": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha --require babel-register",
     "test-watch": "export WATCH='watch' && nodemon --exec 'npm test'",
     "build": "babel . -d dist --presets es2015,stage-2 --ignore spec.js,node_modules",
