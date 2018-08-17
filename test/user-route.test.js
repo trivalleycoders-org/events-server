@@ -23,13 +23,11 @@ describe('User Route', () => {
   }
 
   it('should register a new user', async () => {
-    const result = await request(app).post('/users').send({ user }).expect(200)
-    // console.log('result token: ', result)
+    await request(app).post('/users').send({ user }).expect(200)
   })
 
   it('should login the user', async () => {
-    const result = await request(app).post('/users/login').send({ email: user.email, password: user.password }).expect(200)
-    // console.log('result after login : ', result)
+    await request(app).post('/users/login').send({ email: user.email, password: user.password }).expect(200)
   })
 
 })
