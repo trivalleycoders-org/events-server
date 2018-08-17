@@ -14,7 +14,7 @@ import { yellow, redf } from '../logger'
 const MongoClient = require('mongodb').MongoClient
 
 const returnError = (e) => {
-  return { data: [], meta: { error: e.message }}
+  return { data: [], meta: { error: e.message } }
 
 }
 
@@ -53,7 +53,7 @@ export const search = async (collection, searchTerm, project) => {
   try {
     const client = await MongoClient.connect(mongoUrl)
     const db = await client.db(dbName)
-    const ret = await db.collection(collection).find({ $text: { $search: searchTerm }}).project(project).sort({ score: { $meta: 'textScore' } }).toArray()
+    const ret = await db.collection(collection).find({ $text: { $search: searchTerm } }).project(project).sort({ score: { $meta: 'textScore' } }).toArray()
     return { data: ret, meta: {} }
   }
   catch (e) {
@@ -92,7 +92,7 @@ export const findOneAndDelete = async (collection, id) => {
   }
 }
 
-export const findOneAndUpdate = async ( collection, id, filter, returnOriginal = false ) => {
+export const findOneAndUpdate = async (collection, id, filter, returnOriginal = false) => {
   try {
     // if the filter has the _id prop, remove it
     const cleanFilter = removeIdProp(filter)
@@ -100,7 +100,7 @@ export const findOneAndUpdate = async ( collection, id, filter, returnOriginal =
     const client = await MongoClient.connect(mongoUrl)
     const db = await client.db(dbName)
     const ret = await db.collection(collection).findOneAndUpdate(
-      { _id: objId},
+      { _id: objId },
       { $set: cleanFilter },
       { returnOriginal: returnOriginal }
     )
@@ -121,7 +121,7 @@ export const insertOne = async (collection, data) => {
     return { data: ret.ops, meta: { n: 1 } }
   }
   catch (e) {
-    redf('ERROR: dbFunctions.insert', e.message)
+    redf('ERROR: dbFunctions.insertOne', e)
     return returnError(e)
   }
 
