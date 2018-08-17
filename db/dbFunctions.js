@@ -20,7 +20,7 @@ const returnError = (e) => {
 
 export const dropCollection = async (collection) => {
   try {
-    const client = await MongoClient.connect(mongoUrl)
+    const client = await MongoClient.connect(mongoUrl, { useNewUrlParser: true })
     const db = await client.db(dbName)
     const ret = await db.collection(collection).drop()
     return ret
@@ -38,7 +38,7 @@ export const dropCollection = async (collection) => {
 
 export const find = async (collection, query = {}, project = {}) => {
   try {
-    const client = await MongoClient.connect(mongoUrl)
+    const client = await MongoClient.connect(mongoUrl, { useNewUrlParser: true })
     const db = await client.db(dbName)
     const ret = await db.collection(collection).find(query).project(project).toArray()
     return { data: ret, meta: {} }
@@ -51,7 +51,7 @@ export const find = async (collection, query = {}, project = {}) => {
 
 export const search = async (collection, searchTerm, project) => {
   try {
-    const client = await MongoClient.connect(mongoUrl)
+    const client = await MongoClient.connect(mongoUrl, { useNewUrlParser: true })
     const db = await client.db(dbName)
     const ret = await db.collection(collection).find({ $text: { $search: searchTerm } }).project(project).sort({ score: { $meta: 'textScore' } }).toArray()
     return { data: ret, meta: {} }
@@ -66,7 +66,7 @@ export const search = async (collection, searchTerm, project) => {
 export const findById = async (collection, id, project = {}) => {
   try {
     const objId = getObjectId(id)
-    const client = await MongoClient.connect(mongoUrl)
+    const client = await MongoClient.connect(mongoUrl, { useNewUrlParser: true })
     const db = await client.db(dbName)
     const ret = await db.collection(collection).find({ _id: objId }).project(project).toArray()
     return { data: ret, meta: {} }
@@ -81,7 +81,7 @@ export const findById = async (collection, id, project = {}) => {
 export const findOneAndDelete = async (collection, id) => {
   try {
     const objId = getObjectId(id)
-    const client = await MongoClient.connect(mongoUrl)
+    const client = await MongoClient.connect(mongoUrl, { useNewUrlParser: true })
     const db = await client.db(dbName)
     const ret = await db.collection(collection).findOneAndDelete({ _id: objId })
     return { data: [ret.value], meta: {} }
@@ -97,7 +97,7 @@ export const findOneAndUpdate = async (collection, id, filter, returnOriginal = 
     // if the filter has the _id prop, remove it
     const cleanFilter = removeIdProp(filter)
     const objId = getObjectId(id)
-    const client = await MongoClient.connect(mongoUrl)
+    const client = await MongoClient.connect(mongoUrl, { useNewUrlParser: true })
     const db = await client.db(dbName)
     const ret = await db.collection(collection).findOneAndUpdate(
       { _id: objId },
@@ -114,7 +114,7 @@ export const findOneAndUpdate = async (collection, id, filter, returnOriginal = 
 
 export const insertOne = async (collection, data) => {
   try {
-    const client = await MongoClient.connect(mongoUrl)
+    const client = await MongoClient.connect(mongoUrl, { useNewUrlParser: true })
     const db = await client.db(dbName)
     const ret = await db.collection(collection).insertOne(data)
     // yellow('ret', ret)
@@ -129,7 +129,7 @@ export const insertOne = async (collection, data) => {
 
 export const insertMany = async (collection, data) => {
   try {
-    const client = await MongoClient.connect(mongoUrl)
+    const client = await MongoClient.connect(mongoUrl, { useNewUrlParser: true })
     const db = await client.db(dbName)
     const ret = await db.collection(collection).insertMany(data)
     return { data: ret.ops, meta: { n: 1 } }
