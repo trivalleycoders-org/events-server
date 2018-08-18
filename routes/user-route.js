@@ -3,7 +3,7 @@ const crypto = require('crypto')
 const jwt = require('jsonwebtoken')
 
 import { red } from '../logger/'
-import { insertOne } from '../db/dbFunctions'
+import { findById, insertOne } from '../db/dbFunctions'
 
 const router = require('express').Router()
 const secret = require('../config').secret
@@ -12,6 +12,7 @@ let auth = require('./auth')
 
 
 const setPassword = (password) => {
+  console.log('password: ', password)
   const salt = crypto.randomBytes(16).toString('hex')
   const hash = crypto.pbkdf2Sync(password, salt, 10000, 512, 'sha512').toString('hex')
   return { hash, salt }
@@ -29,12 +30,21 @@ const generateJWT = (id, email) => {
   }, secret)
 }
 
-// router.get('/user', auth.required, function (req, res, next) {
-//   User.findById(req.payload.id).then(function (user) {
-//     if (!user) { return res.sendStatus(401) }
+const toAuthJSON = function (user) {
+  return {
+    email: user.email,
+    token: generateJWT(user.id, user.email)
+  }
+}
 
-//     return res.json({ user: user.toAuthJSON() })
-//   }).catch(next)
+// router.get('/user', auth.required, function (req, res, next) {
+//   try {
+//     const user = findById(req.payload.id)
+//     if (!user) { return res.sendStatus(401) }
+//     return res.json(toAuthJSON())
+//   } catch (err) {
+//     return next(err)
+//   }
 // })
 
 // router.put('/user', auth.required, function (req, res, next) {
@@ -65,11 +75,11 @@ const generateJWT = (id, email) => {
 // })
 
 router.post('/users/login', (req, res, next) => {
-  if (!req.body.email) {
+  if (!req.body.user.email) {
     return res.status(422).json({ errors: { email: 'can\'t be blank' } })
   }
 
-  if (!req.body.password) {
+  if (!req.body.user.password) {
     return res.status(422).json({ errors: { password: 'can\'t be blank' } })
   }
 
@@ -79,9 +89,9 @@ router.post('/users/login', (req, res, next) => {
     }
 
     if (user) {
-      const id = user.data[0]._id
-      const token = generateJWT(id, req.body.email)
-      return res.json({ email: req.body.email, token })
+      const u = user.data[0]
+      u.id = user.data[0]._id
+      return res.json(toAuthJSON(u))
     } else {
       return res.status(422).json(info)
     }
@@ -98,10 +108,11 @@ router.post('/users', async (req, res, next) => {
     user.salt = salt
 
     const result = await insertOne('users', user)
-    res.send({ email: user.email, token: generateJWT(result.data._id, user.email) })
+    user.id = result.data[0]._id
+    return res.json(toAuthJSON(user))
   } catch (e) {
     red('error', e)
-    res.status(400).send(e)
+    return res.status(400).send(e)
   }
 })
 

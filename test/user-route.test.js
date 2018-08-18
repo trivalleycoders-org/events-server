@@ -27,7 +27,7 @@ describe('User Route', () => {
   })
 
   it('should login the user', async () => {
-    await request(app).post('/users/login').send({ email: user.email, password: user.password }).expect(200)
+    const res = await request(app).post('/users/login').send({ user }).expect(200)
   })
 
 })
