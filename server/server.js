@@ -40,8 +40,8 @@ app.get('/', (req, res) => {
 // })
 
 if (!module.parent) {
-  app.listen(conf.port, () => {
-    console.log(`Events API server is listening on port ${conf.port}`)
+  app.listen(port, () => {
+    console.log(`Events API server is listening on port ${port}`)
   })
 }
 
