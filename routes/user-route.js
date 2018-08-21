@@ -6,13 +6,17 @@ import { findById, findOneAndUpdate, insertOne } from '../db/dbFunctions'
 
 const router = require('express').Router()
 
-let auth = require('./auth')
+const auth = require('./auth')
 
 const toAuthJSON = function (user) {
   return {
-    id: user.id,
-    email: user.email,
-    token: generateJWT(user.id, user.email)
+    data: {
+      user: {
+        id: user.id,
+        email: user.email,
+        token: generateJWT(user.id, user.email)
+      }
+    }
   }
 }
 
@@ -28,15 +32,17 @@ router.get('/user', auth.required, async (req, res, next) => {
   }
 })
 
+// Update User
 router.put('/user', auth.required, async (req, res, next) => {
+
   try {
     const user = await findById('users', req.payload.id)
     if (!user) { return res.sendStatus(401) }
 
     const u = user.data[0]
     u.id = user.data[0]._id
-    if (typeof req.body.user.password !== 'undefined') {
-      const { hash, salt } = setPassword(req.body.user.password)
+    if (typeof req.body.password !== 'undefined') {
+      const { hash, salt } = setPassword(req.body.password)
       u.hash = hash
       u.salt = salt
     }
@@ -48,12 +54,14 @@ router.put('/user', auth.required, async (req, res, next) => {
   }
 })
 
+// Authentication
 router.post('/users/login', (req, res, next) => {
-  if (!req.body.user.email) {
+
+  if (!req.body.email) {
     return res.status(422).json({ errors: { email: 'can\'t be blank' } })
   }
 
-  if (!req.body.user.password) {
+  if (!req.body.password) {
     return res.status(422).json({ errors: { password: 'can\'t be blank' } })
   }
 
@@ -72,12 +80,13 @@ router.post('/users/login', (req, res, next) => {
   })(req, res, next)
 })
 
+// Registration
 router.post('/users', async (req, res, next) => {
   let user = {}
 
   try {
-    user.email = req.body.user.email
-    const { hash, salt } = setPassword(req.body.user.password)
+    user.email = req.body.email
+    const { hash, salt } = setPassword(req.body.password)
     user.hash = hash
     user.salt = salt
 

@@ -6,8 +6,8 @@ import { find } from '../db/dbFunctions'
 const LocalStrategy = require('passport-local').Strategy
 
 const options = {
-  usernameField: 'user[email]',
-  passwordField: 'user[password]'
+  usernameField: 'email',
+  passwordField: 'password'
 }
 
 const verify = async (username, password, done) => {

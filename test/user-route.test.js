@@ -2,6 +2,7 @@ import request from 'supertest'
 const chai = require('chai')
 const http = require('chai-http')
 const jwt = require('jsonwebtoken')
+import 'babel-polyfill'
 
 // import app from '../server/server.js'
 
@@ -11,7 +12,7 @@ const server = require('../server/server')
 const expect = chai.expect
 chai.use(http)
 
-// import { dropCollection } from '../db/dbFunctions'
+import { dropCollection } from '../db/dbFunctions'
 
 const apiServer = server.app.listen(server.port)
 
@@ -21,19 +22,27 @@ const Api = () => chai.request(apiServer)
 const util = require('util')
 const setTimeoutPromise = util.promisify(setTimeout)
 
+// This dropCollection in before has to be placed outside the following describe to work
+// as this is a precondition to be executed before all tests run
+before(() => {
+  try {
+    dropCollection('users')
+  }
+  catch (e) {
+    redf('ERROR: before', e)
+  }
+})
+
 
 describe('User Route', () => {
 
   const user = {
-    email: 'test5@xyz.com',
+    email: 'test1@xyz.com',
     password: 'welcome'
   }
 
   let loggedUser = undefined
 
-  // before(function () {
-  //   //   await dropCollection('users')
-  // })
 
   after(async () => {
     if (!process.env.WATCH) {
@@ -46,18 +55,18 @@ describe('User Route', () => {
   it('should register a new user', async () => {
     const res = await Api()
       .post('/users')
-      .send({ user })
-    expect(res.body.email).to.equal(user.email)
+      .send({ email: user.email, password: user.password })
+    expect(res.body.data.user.email).to.equal(user.email)
   })
 
   it('should login the user', async () => {
     const res = await Api()
       .post('/users/login')
-      .send({ user })
+      .send({ email: user.email, password: user.password })
     loggedUser = res.body
-    const jwtDecoded = jwt.decode(loggedUser.token)
-    expect(jwtDecoded.email).to.equal(loggedUser.email)
-    expect(jwtDecoded.id).to.equal(loggedUser.id)
+    const jwtDecoded = jwt.decode(loggedUser.data.user.token)
+    expect(jwtDecoded.email).to.equal(loggedUser.data.user.email)
+    expect(jwtDecoded.id).to.equal(loggedUser.data.user.id)
   })
 
   it('should return logged in user information', async () => {
@@ -71,15 +80,16 @@ describe('User Route', () => {
     const newPwd = 'welcome123'
     const res1 = await Api()
       .put('/user')
-      .set('Authorization', `Token ${loggedUser.token}`)
-      .send({ user: { password: newPwd } })
+      .set('Authorization', `Token ${loggedUser.data.user.token}`)
+      .send({ password: newPwd })
+
     expect(res1.status).to.equal(200)
     const res2 = await Api()
       .post('/users/login')
-      .send({ user: { email: user.email, password: newPwd } })
+      .send({ email: user.email, password: newPwd })
     loggedUser = res2.body
-    const jwtDecoded = jwt.decode(loggedUser.token)
-    expect(jwtDecoded.email).to.equal(loggedUser.email)
-    expect(jwtDecoded.id).to.equal(loggedUser.id)
+    const jwtDecoded = jwt.decode(loggedUser.data.user.token)
+    expect(jwtDecoded.email).to.equal(loggedUser.data.user.email)
+    expect(jwtDecoded.id).to.equal(loggedUser.data.user.id)
   }).timeout(10000)
 })
