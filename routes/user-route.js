@@ -70,12 +70,13 @@ router.post('/users/login', (req, res, next) => {
       return next(err)
     }
 
+    console.log('info in authenticate: ', info)
     if (user) {
       const u = user.data[0]
       u.id = user.data[0]._id
       return res.json(toAuthJSON(u))
     } else {
-      return res.status(422).json(info)
+      return res.status(422).json({ error: info.errors })
     }
   })(req, res, next)
 })
