@@ -2,7 +2,6 @@ import request from 'supertest'
 const chai = require('chai')
 const http = require('chai-http')
 const jwt = require('jsonwebtoken')
-import 'babel-polyfill'
 
 // import app from '../server/server.js'
 
