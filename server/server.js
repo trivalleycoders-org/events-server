@@ -35,8 +35,14 @@ app.get('/', (req, res) => {
   res.send('Invalid endpoint!')
 })
 
-app.listen(port, () => {
-  greenf('server started - ', port)
-})
+// app.listen(port, () => {
+//   greenf('server started - ', port)
+// })
 
-export default app
+if (!module.parent) {
+  app.listen(port, () => {
+    console.log(`Events API server is listening on port ${port}`)
+  })
+}
+
+module.exports = { app, port }

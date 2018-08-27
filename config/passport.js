@@ -1,6 +1,6 @@
 import passport from 'passport'
-const crypto = require('crypto')
 
+import { validPassword } from '../utils'
 import { find } from '../db/dbFunctions'
 
 const LocalStrategy = require('passport-local').Strategy
@@ -8,11 +8,6 @@ const LocalStrategy = require('passport-local').Strategy
 const options = {
   usernameField: 'email',
   passwordField: 'password'
-}
-
-const validPassword = (password, user) => {
-  const hash = crypto.pbkdf2Sync(password, user.salt, 10000, 512, 'sha512').toString('hex')
-  return hash === user.hash
 }
 
 const verify = async (username, password, done) => {

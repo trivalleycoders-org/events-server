@@ -16,3 +16,9 @@ export const people = [
     last: 'Donnelly',
   },
 ]
+
+export const person =
+{
+  first: 'John',
+  last: 'Doe'
+}

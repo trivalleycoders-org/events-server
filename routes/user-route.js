@@ -1,70 +1,62 @@
 import passport from 'passport'
-const crypto = require('crypto')
-const jwt = require('jsonwebtoken')
 
+import { setPassword, generateJWT } from '../utils'
 import { red } from '../logger/'
-import { insertOne } from '../db/dbFunctions'
+import { findById, findOneAndUpdate, insertOne } from '../db/dbFunctions'
 
 const router = require('express').Router()
-const secret = require('../config').secret
 
-let auth = require('./auth')
+const auth = require('./auth')
 
-
-const setPassword = (password) => {
-  const salt = crypto.randomBytes(16).toString('hex')
-  const hash = crypto.pbkdf2Sync(password, salt, 10000, 512, 'sha512').toString('hex')
-  return { hash, salt }
+const toAuthJSON = function (user) {
+  return {
+    data: {
+      user: {
+        id: user.id,
+        email: user.email,
+        token: generateJWT(user.id, user.email)
+      }
+    }
+  }
 }
 
-const generateJWT = (id, email) => {
-  const today = new Date()
-  let exp = new Date(today)
-  exp.setDate(today.getDate() + 60)
+router.get('/user', auth.required, async (req, res, next) => {
+  try {
+    const user = await findById('users', req.payload.id)
+    if (!user) { return res.sendStatus(401) }
+    const u = user.data[0]
+    u.id = user.data[0]._id
+    return res.json(toAuthJSON(u))
+  } catch (err) {
+    return next(err)
+  }
+})
 
-  return jwt.sign({
-    id,
-    email,
-    exp: parseInt(exp.getTime() / 1000),
-  }, secret)
-}
+// Update User
+router.put('/user', auth.required, async (req, res, next) => {
 
-// router.get('/user', auth.required, function (req, res, next) {
-//   User.findById(req.payload.id).then(function (user) {
-//     if (!user) { return res.sendStatus(401) }
+  try {
+    const user = await findById('users', req.payload.id)
+    if (!user) { return res.sendStatus(401) }
 
-//     return res.json({ user: user.toAuthJSON() })
-//   }).catch(next)
-// })
+    const u = user.data[0]
+    u.id = user.data[0]._id
+    if (typeof req.body.password !== 'undefined') {
+      const { hash, salt } = setPassword(req.body.password)
+      u.hash = hash
+      u.salt = salt
+    }
 
-// router.put('/user', auth.required, function (req, res, next) {
-//   User.findById(req.payload.id).then(function (user) {
-//     if (!user) { return res.sendStatus(401) }
+    const updUser = await findOneAndUpdate('users', u.id, u)
+    return res.json(toAuthJSON(updUser.data[0]))
+  } catch (err) {
+    return next(err)
+  }
+})
 
-//     // only update fields that were actually passed...
-//     if (typeof req.body.user.username !== 'undefined') {
-//       user.username = req.body.user.username
-//     }
-//     if (typeof req.body.user.email !== 'undefined') {
-//       user.email = req.body.user.email
-//     }
-//     if (typeof req.body.user.bio !== 'undefined') {
-//       user.bio = req.body.user.bio
-//     }
-//     if (typeof req.body.user.image !== 'undefined') {
-//       user.image = req.body.user.image
-//     }
-//     if (typeof req.body.user.password !== 'undefined') {
-//       user.setPassword(req.body.user.password)
-//     }
-
-//     return user.save().then(function () {
-//       return res.json({ user: user.toAuthJSON() })
-//     })
-//   }).catch(next)
-// })
-
+// Authentication
 router.post('/users/login', (req, res, next) => {
+
   if (!req.body.email) {
     return res.status(422).json({ errors: { email: 'can\'t be blank' } })
   }
@@ -78,30 +70,33 @@ router.post('/users/login', (req, res, next) => {
       return next(err)
     }
 
+    console.log('info in authenticate: ', info)
     if (user) {
-      const id = user.data[0]._id
-      const token = generateJWT(id, req.body.email)
-      return res.json({ email: req.body.email, token })
+      const u = user.data[0]
+      u.id = user.data[0]._id
+      return res.json(toAuthJSON(u))
     } else {
-      return res.status(422).json(info)
+      return res.status(422).json({ error: info.errors })
     }
   })(req, res, next)
 })
 
+// Registration
 router.post('/users', async (req, res, next) => {
   let user = {}
 
   try {
-    user.email = req.body.user.email
-    const { hash, salt } = setPassword(req.body.user.password)
+    user.email = req.body.email
+    const { hash, salt } = setPassword(req.body.password)
     user.hash = hash
     user.salt = salt
 
     const result = await insertOne('users', user)
-    res.send({ email: user.email, token: generateJWT(result.data._id, user.email) })
+    user.id = result.data[0]._id
+    return res.json(toAuthJSON(user))
   } catch (e) {
     red('error', e)
-    res.status(400).send(e)
+    return res.status(400).send(e)
   }
 })
 
