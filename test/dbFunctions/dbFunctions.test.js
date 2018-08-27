@@ -38,9 +38,13 @@ const dropAllCollections = async () => {
 //   yellow('before')
 // })
 
+before(async () => {
+  await dropAllCollections()
+})
+
 after(async () => {
   // dropPeopleCollection()
-  dropAllCollections()
+  await dropAllCollections()
   if (!process.env.WATCH) {
     setTimeoutPromise(1900).then((value) => {
       process.exit(0)

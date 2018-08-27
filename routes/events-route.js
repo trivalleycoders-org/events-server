@@ -53,6 +53,21 @@ router.get('/:id', async (req, res) => {
   }
 })
 
+router.get('my-events/:user', async (req, res) => {
+  const user = req.params.id
+  try {
+    // let event = await findById('events', id)
+    const events = await find('events', {})
+    if (!event) {
+      return res.status(404).send()
+    }
+    res.send(event)
+
+  } catch (e) {
+    res.status(400).send(e)
+  }
+})
+
 router.delete('/:id', async (req, res) => {
   const id = req.params.id
 
