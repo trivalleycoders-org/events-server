@@ -12,7 +12,7 @@ const options = {
 
 const verify = async (username, password, done) => {
   const user = await find('users', { email: username })
-  if (!user || !validPassword(password, user.data[0])) {
+  if (!user.data[0] || !validPassword(password, user.data[0])) {
     return done(null, false, { errors: { 'email or password': 'is invalid' } })
   }
   return done(null, user)

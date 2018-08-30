@@ -93,6 +93,15 @@ router.post('/users', async (req, res, next) => {
 
     const result = await insertOne('users', user)
     user.id = result.data[0]._id
+
+    const token = generateJWT(user.id, user.email)
+
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000')
+    if (process.env.NODE_ENV === 'production') {
+      res.cookie('token', token, { secure: true, maxAge: 120000, httpOnly: true })
+    } else {
+      res.cookie('token', token, { maxAge: 120000, httpOnly: false })
+    }
     return res.json(toAuthJSON(user))
   } catch (e) {
     red('error', e)
