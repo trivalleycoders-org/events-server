@@ -46,8 +46,22 @@ router.put('/user', auth.required, async (req, res, next) => {
       u.hash = hash
       u.salt = salt
     }
-
     const updUser = await findOneAndUpdate('users', u.id, u)
+
+    /* setting cookie */
+    const token = generateJWT(u.id, u.email)
+    console.log('token in update: ', token)
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000')
+    if (process.env.NODE_ENV === 'production') {
+      res.cookie('token', token, { secure: true, maxAge: 120000, httpOnly: true })
+    } else {
+      /*
+      httpOnly shd be set false to work on localhost.
+      Otherwise cookie is not accessible using document.cookie
+      in the frontend
+      */
+      res.cookie('token', token, { maxAge: 120000, httpOnly: false })
+    }
     return res.json(toAuthJSON(updUser.data[0]))
   } catch (err) {
     return next(err)
@@ -74,6 +88,21 @@ router.post('/users/login', (req, res, next) => {
     if (user) {
       const u = user.data[0]
       u.id = user.data[0]._id
+
+      /* setting cookie */
+      const token = generateJWT(u.id, u.email)
+      res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000')
+      if (process.env.NODE_ENV === 'production') {
+        res.cookie('token', token, { secure: true, maxAge: 120000, httpOnly: true })
+      } else {
+        /*
+        httpOnly shd be set false to work on localhost.
+        Otherwise cookie is not accessible using document.cookie
+        in the frontend
+        */
+        res.cookie('token', token, { maxAge: 120000, httpOnly: false })
+      }
+
       return res.json(toAuthJSON(u))
     } else {
       return res.status(422).json({ error: info.errors })
@@ -100,6 +129,11 @@ router.post('/users', async (req, res, next) => {
     if (process.env.NODE_ENV === 'production') {
       res.cookie('token', token, { secure: true, maxAge: 120000, httpOnly: true })
     } else {
+      /*
+      httpOnly shd be set false to work on localhost.
+      Otherwise cookie is not accessible using document.cookie
+      in the frontend
+      */
       res.cookie('token', token, { maxAge: 120000, httpOnly: false })
     }
     return res.json(toAuthJSON(user))
