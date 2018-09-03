@@ -2,7 +2,11 @@ import passport from 'passport'
 
 import { setPassword, generateJWT } from '../utils'
 import { red } from '../logger/'
-import { findById, findOneAndUpdate, insertOne } from '../db/dbFunctions'
+import { findById, findOneAndUpdate, insertOne, find } from '../db/dbFunctions'
+/* Dev */
+// eslint-disable-next-line
+import { yellow } from '../logger'
+
 
 const router = require('express').Router()
 
@@ -90,6 +94,16 @@ router.post('/users', async (req, res, next) => {
     const { hash, salt } = setPassword(req.body.password)
     user.hash = hash
     user.salt = salt
+    // check if the email is already registered
+    const alreadyRegistered = await find('users', {email: user.email}, {_id: 0, email: 1})
+    yellow('alreadyRegistered', alreadyRegistered)
+    // nothing found: { data: [], meta: {} }
+    const data = alreadyRegistered.data
+    if (data.length > 0) {
+      const e = new Error(`email ${data[0]} is already registered`)
+      return res.status(409).send(e)
+    }
+
 
     const result = await insertOne('users', user)
     user.id = result.data[0]._id
