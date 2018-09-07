@@ -1,7 +1,7 @@
 import express from 'express'
 import { omit, merge } from 'ramda'
 /* User */
-import { find, findById, insertOne, findOneAndDelete, findOneAndUpdate } from '../db'
+import { find, findById, insertOne, findOneAndDelete, findOneAndUpdate, objectIdFromHexString } from '../db'
 /* Dev */
 import { red, yellow } from '../logger'
 
@@ -11,10 +11,10 @@ router.post('/', async (req, res) => {
 
   try {
     const event = req.body
-    const postalCode_id = event.postalCode_id
+    const postalCodeId = objectIdFromHexString(event.postalCodeId)
     const postalData = await findById(
       'postalCodes',
-      postalCode_id,
+      postalCodeId,
       { cityName: 1, postalCode: 1, stateCode: 1, _id: 0 }
     )
     // Remove existing postCode and and merge

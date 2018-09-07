@@ -8,6 +8,10 @@ import {
   insertMany
 } from './dbFunctions'
 
+import {
+  objectIdFromHexString,
+} from './helpers'
+
 export {
   dropCollection,
   findOneAndDelete,
@@ -15,5 +19,6 @@ export {
   find,
   findById,
   insertOne,
-  insertMany
+  insertMany,
+  objectIdFromHexString,
 }
