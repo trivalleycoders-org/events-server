@@ -76,11 +76,11 @@ router.put('/user', auth.required, async (req, res, next) => {
 router.post('/users/login', (req, res, next) => {
 
   if (!req.body.email) {
-    return res.status(422).json({ errors: { email: 'can\'t be blank' } })
+    return res.status(422).json({ error: 'email can\'t be blank' })
   }
 
   if (!req.body.password) {
-    return res.status(422).json({ errors: { password: 'can\'t be blank' } })
+    return res.status(422).json({ error: 'password can\'t be blank' })
   }
 
   passport.authenticate('local', { session: false }, function (err, user, info) {
@@ -109,7 +109,7 @@ router.post('/users/login', (req, res, next) => {
 
       return res.json(toAuthJSON(u))
     } else {
-      return res.status(422).json({ error: info.errors })
+      return res.status(422).json({ error: info })
     }
   })(req, res, next)
 })
@@ -124,7 +124,7 @@ router.post('/users', async (req, res, next) => {
     user.hash = hash
     user.salt = salt
     // check if the email is already registered
-    const alreadyRegistered = await find('users', {email: user.email}, {_id: 0, email: 1})
+    const alreadyRegistered = await find('users', { email: user.email }, { _id: 0, email: 1 })
     yellow('alreadyRegistered', alreadyRegistered)
     // nothing found: { data: [], meta: {} }
     const data = alreadyRegistered.data
