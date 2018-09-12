@@ -17,6 +17,8 @@ router.post('/', async (req, res) => {
       postalCodeId,
       { cityName: 1, postalCode: 1, stateCode: 1, _id: 0 }
     )
+    yellow('postalCodeId', postalCodeId)
+    yellow('postalData', postalData)
     // Remove existing postCode and and merge
     const a = omit(['postalCode_id'], event)
     const b = merge(a, postalData.data[0])
@@ -110,10 +112,20 @@ router.patch('/:id', async (req, res) => {
   try {
     const id = req.params.id
     const eventSent = req.body
+    const postalCodeId = objectIdFromHexString(eventSent.postalCodeId)
+    const postalData = await findById(
+      'postalCodes',
+      postalCodeId,
+      { cityName: 1, postalCode: 1, stateCode: 1, _id: 0 }
+    )
+    yellow('postalCodeId', postalCodeId)
+    yellow('postalData', postalData)
+    const a = omit(['postalCode_id'], eventSent)
+    const b = merge(a, postalData.data[0])
     const eventToReturn = await findOneAndUpdate(
       'events',
       id,
-      eventSent,
+      b,
     )
     if (!eventToReturn) {
       return res.status(404).send()
