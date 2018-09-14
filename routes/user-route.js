@@ -32,7 +32,8 @@ router.get('/user', auth.required, async (req, res, next) => {
     u.id = user.data[0]._id
     return res.json(toAuthJSON(u))
   } catch (err) {
-    return next(err)
+    // return next(err)
+    return res.json({ error: err })
   }
 })
 
@@ -68,7 +69,8 @@ router.put('/user', auth.required, async (req, res, next) => {
     }
     return res.json(toAuthJSON(updUser.data[0]))
   } catch (err) {
-    return next(err)
+    // return next(err)
+    return res.json({ error: err })
   }
 })
 
@@ -129,8 +131,9 @@ router.post('/users', async (req, res, next) => {
     // nothing found: { data: [], meta: {} }
     const data = alreadyRegistered.data
     if (data.length > 0) {
-      const e = new Error(`email ${data[0]} is already registered`)
-      return res.status(409).send(e)
+      // const e = new Error(`email ${data[0]} is already registered`)
+      // return res.status(409).send(e)
+      return res.status(422).json({ error: `Email ${data[0].email} is already registered` })
     }
 
 
@@ -153,7 +156,8 @@ router.post('/users', async (req, res, next) => {
     return res.json(toAuthJSON(user))
   } catch (e) {
     red('error', e)
-    return res.status(400).send(e)
+    // return res.status(400).send(e)
+    return res.status(400).json({ error: e })
   }
 })
 
