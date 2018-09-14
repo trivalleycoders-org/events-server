@@ -11,6 +11,7 @@ import events from '../routes/events-route'
 import images from '../routes/image-route'
 import search from '../routes/search-route'
 import location from '../routes/location-route'
+import starwars from '../routes/starwars-route'
 
 const app = express()
 const port = process.env.PORT
@@ -30,6 +31,7 @@ app.use('/events', events)
 app.use('/images', images)
 app.use('/search', search)
 app.use('/location', location)
+app.use('/starwars', starwars)
 app.get('/', (req, res) => {
   redf('Invalid endpoint!')
   res.send('Invalid endpoint!')

@@ -1,5 +1,4 @@
 import express from 'express'
-const router = express.Router()
 import { append, pick } from 'ramda'
 import formidable from 'formidable'
 import { red, blue, yellow } from '../logger'
@@ -7,6 +6,7 @@ import path from 'path'
 import fs from 'fs'
 import S3 from 'aws-sdk/clients/s3'
 
+const router = express.Router()
 const bucketName = 'photo-app-tvc'
 
 const getDateAndTime = () => {
