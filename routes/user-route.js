@@ -58,14 +58,15 @@ router.put('/user', auth.required, async (req, res, next) => {
     console.log('token in update: ', token)
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000')
     if (process.env.NODE_ENV === 'production') {
-      res.cookie('token', token, { secure: true, maxAge: 120000, httpOnly: true })
+      res.cookie('token', token, { secure: true, maxAge: 1800000, httpOnly: true }) // 1800000 - 30 mins
     } else {
       /*
       httpOnly shd be set false to work on localhost.
       Otherwise cookie is not accessible using document.cookie
       in the frontend
+      * https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies
       */
-      res.cookie('token', token, { maxAge: 120000, httpOnly: false })
+      res.cookie('token', token, { maxAge: 1800000, httpOnly: false }) //300000 - 5 mins
     }
     return res.json(toAuthJSON(updUser.data[0]))
   } catch (err) {

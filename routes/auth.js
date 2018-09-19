@@ -3,7 +3,6 @@ import jwt from 'express-jwt'
 const secret = require('../config').secret
 
 function getTokenFromCookie(req) {
-  // console.log('req.headers.authorization: ', req.headers.authorization)
   if (req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Token' ||
     req.headers.authorization && req.headers.authorization.split(' ')[0] === 'Bearer') {
     return req.headers.authorization.split(' ')[1]
