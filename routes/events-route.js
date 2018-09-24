@@ -7,10 +7,91 @@ import { red, yellow } from '../logger'
 
 const router = express.Router()
 
+
+
+/* Merge code from Ramda Repl
+
+const from = {
+  "title": "e",
+  "organization": "o",
+  "dates": {
+    "startDate": "2018-09-19T00:37:30.927Z",
+    "endDate": "2018-09-19T00:37:30.942Z"
+  },
+  "venueName": "v",
+  "linkToUrl": "l",
+  "postalCode": {
+    "_id": "5b5f6f52222be42bb919c008",
+    "postalCode": "94582",
+    "searchString": "94582 San Ramon California"
+  },
+  "price": "9",
+  "tags": [
+    "one"
+  ]
+}
+
+const to = {
+  "title": "e",
+  "organization": "o",
+  "dates": {
+    "startDate": "2018-09-19T00:37:30.927Z",
+    "endDate": "2018-09-19T00:37:30.942Z"
+  },
+  "venueName": "v",
+  "linkToUrl": "l",
+  "location": {
+    "postalCode": {
+      "_id": "5b5f6f52222be42bb919c008",
+      "postalCode": "94582",
+      "searchString": "94582 San Ramon California"
+    },
+    "cityName": "New York",
+    "stateCode": "NY",
+  },
+  "price": "9",
+  "tags": [
+    "one"
+  ]
+}
+
+const cityName = "New York" // from db
+const stateCode = "NY"  // from db
+const postalCode = R.pick(['postalCode'], from)
+
+
+const r1 = R.omit(['postalCode'], from)
+
+
+
+const locationObj = R.mergeAll([
+  postalCode,
+  {cityName},
+  {stateCode}
+])
+
+locationObj
+
+
+
+const final = R.mergeAll([
+  locationObj,
+  r1,
+])
+
+final
+
+
+
+
+*/
+
+
 router.post('/', async (req, res) => {
 
   try {
     const event = req.body
+
     const postalCodeId = objectIdFromHexString(event.postalCodeId)
     const postalData = await findById(
       'postalCodes',
@@ -35,7 +116,8 @@ router.post('/', async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
-    const events = await find('events', {})
+    const events = await find('events', {startDateTime: { $gt: new Date().toISOString() } })
+    // const events = await find('events', {})
     res.send(events)
   } catch (e) {
     res.status(400).send(e)
