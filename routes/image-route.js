@@ -1,12 +1,12 @@
 import express from 'express'
-const router = express.Router()
 import { append, pick } from 'ramda'
 import formidable from 'formidable'
 import { red, blue, yellow } from '../logger'
-import path from 'path'
+import path, { dirname } from 'path'
 import fs from 'fs'
 import S3 from 'aws-sdk/clients/s3'
 
+const router = express.Router()
 const bucketName = 'photo-app-tvc'
 
 const getDateAndTime = () => {
@@ -27,15 +27,25 @@ const getDateAndTime = () => {
   return today
 }
 
+const checkDirectoryExists = (dir) => {
+  try {
+    fs.statSync(dir)
+  } catch (e) {
+    fs.mkdirSync(dir)
+  }
+}
+
 router.post('/', async (req, res) => {
   try {
     ////////////////////////////////////////////
     const form = new formidable.IncomingForm()
     let newFileName = undefined
+    let dirName = 'uploads'
 
     // yellow('form', form)
     form.multiples = true
-    form.uploadDir = path.join(__dirname, '../uploads')
+    form.uploadDir = path.join(__dirname, `../${dirName}`)
+    checkDirectoryExists(dirName)
 
     form.on('file', function (field, file) {
       red('** form.on.file')
