@@ -56,7 +56,9 @@ $ yarn test-watch
 1) Clone this project
 2) Install MongoDB
 3) Start MongoDB with
-```$ [path to mongo]/mongod ```
+```
+$ [path to mongo]/mongod 
+```
 4) Create the events database (EventsDev) using instructions from [events-client project](https://github.com/trivalleycoders-org/events-client/edit/master/README.md)
 5) Start the events-server. It will run on port 3030
 ```
