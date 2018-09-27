@@ -45,7 +45,7 @@ router.get('/postal-code/:startsWith', async (req, res) => {
     project1,
   ]
   const ret = await executeAggregate(q)
-  yellow('match1', match1)
+
   res.send(JSON.stringify(ret))
 })
 

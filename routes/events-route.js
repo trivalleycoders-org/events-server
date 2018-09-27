@@ -5,64 +5,12 @@ import { find, findById, insertOne, findOneAndDelete, findOneAndUpdate, objectId
 /* Dev */
 import { red, yellow } from '../logger'
 
-
-
-
-const x = {
-  imageUrl: 'https://photo-app-tvc.s3.us-west-2.amazonaws.com/Selection_017-09-21-2018-1537557922736.png',
-  title: 'Title',
-  organization: 'org',
-  dates: {
-    startDate: '2018-09-21T19:25:13.977Z',
-    endDate: '2018-09-21T19:25:13.988Z'
-  },
-  venueName: 'ven',
-  linkToUrl: 'lin',
-  location: {
-    _id: '5b5f6f52222be42bb919c008',
-    postalCode: '94582',
-    cityName: 'San Ramon',
-    stateCode: 'CA',
-    searchString: '94582 San Ramon California'
-  },
-  price: '39',
-  tags: [ 'one', 'two' ],
-  userId: '5b8da331a685965241323678'
-}
-
-
-
-
-
-
 const router = express.Router()
 
 router.post('/', async (req, res) => {
 
   try {
     const event = req.body
-    yellow('event', event)
-
-    // const postalCodeId = objectIdFromHexString(event.postalCode._id)
-
-    // const cityState = await findById(
-    //   'postalCodes',
-    //   postalCodeId,
-    //   { cityName: 1, stateCode: 1, _id: 0 }
-    // )
-
-    // const location = {
-    //   cityName: cityState.cityName,
-    //   stateCode: cityState.stateCode,
-    // }
-
-
-
-    // // yellow('postalCodeId', postalCodeId)
-    // // yellow('postalData', postalData)
-    // // Remove existing postCode and and merge
-    // const a = omit(['postalCode_id'], event)
-    // const b = merge(a, postalData.data[0])
     const inserted = await insertOne(
       'events',
       event
