@@ -1,4 +1,4 @@
-# rotary-server
+# events-server
 
 ## status
 
