@@ -58,14 +58,15 @@ router.put('/user', auth.required, async (req, res, next) => {
     console.log('token in update: ', token)
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000')
     if (process.env.NODE_ENV === 'production') {
-      res.cookie('token', token, { secure: true, maxAge: 120000, httpOnly: true })
+      res.cookie('token', token, { secure: true, maxAge: 1800000, httpOnly: true }) // 1800000 - 30 mins
     } else {
       /*
       httpOnly shd be set false to work on localhost.
       Otherwise cookie is not accessible using document.cookie
       in the frontend
+      * https://developer.mozilla.org/en-US/docs/Web/HTTP/Cookies
       */
-      res.cookie('token', token, { maxAge: 120000, httpOnly: false })
+      res.cookie('token', token, { maxAge: 1800000, httpOnly: false }) //300000 - 5 mins
     }
     return res.json(toAuthJSON(updUser.data[0]))
   } catch (err) {
@@ -76,7 +77,7 @@ router.put('/user', auth.required, async (req, res, next) => {
 
 // Authentication
 router.post('/users/login', (req, res, next) => {
-
+  let cookieExpTime = 1800000
   if (!req.body.email) {
     return res.status(422).json({ error: 'email can\'t be blank' })
   }
@@ -99,14 +100,14 @@ router.post('/users/login', (req, res, next) => {
       const token = generateJWT(u.id, u.email)
       res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000')
       if (process.env.NODE_ENV === 'production') {
-        res.cookie('token', token, { secure: true, maxAge: 120000, httpOnly: true })
+        res.cookie('token', token, { secure: true, maxAge: cookieExpTime, httpOnly: true })
       } else {
         /*
         httpOnly shd be set false to work on localhost.
         Otherwise cookie is not accessible using document.cookie
         in the frontend
         */
-        res.cookie('token', token, { maxAge: 120000, httpOnly: false })
+        res.cookie('token', token, { maxAge: cookieExpTime, httpOnly: false })
       }
 
       return res.json(toAuthJSON(u))
@@ -119,7 +120,6 @@ router.post('/users/login', (req, res, next) => {
 // Registration
 router.post('/users', async (req, res, next) => {
   let user = {}
-
   try {
     user.email = req.body.email
     const { hash, salt } = setPassword(req.body.password)
@@ -131,8 +131,6 @@ router.post('/users', async (req, res, next) => {
     // nothing found: { data: [], meta: {} }
     const data = alreadyRegistered.data
     if (data.length > 0) {
-      // const e = new Error(`email ${data[0]} is already registered`)
-      // return res.status(409).send(e)
       return res.status(422).json({ error: `Email ${data[0].email} is already registered` })
     }
 
@@ -143,20 +141,9 @@ router.post('/users', async (req, res, next) => {
     const token = generateJWT(user.id, user.email)
 
     res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000')
-    if (process.env.NODE_ENV === 'production') {
-      res.cookie('token', token, { secure: true, maxAge: 120000, httpOnly: true })
-    } else {
-      /*
-      httpOnly shd be set false to work on localhost.
-      Otherwise cookie is not accessible using document.cookie
-      in the frontend
-      */
-      res.cookie('token', token, { maxAge: 120000, httpOnly: false })
-    }
     return res.json(toAuthJSON(user))
   } catch (e) {
     red('error', e)
-    // return res.status(400).send(e)
     return res.status(400).json({ error: e })
   }
 })
