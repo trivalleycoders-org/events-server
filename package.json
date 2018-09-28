@@ -4,7 +4,7 @@
   "description": "server for events project",
   "scripts": {
     "babel-node": "babel-node",
-    "wstart": "SET \"NODE_ENV=development\" && nodemon server/server.js --exec babel-node",
+    "wstart": "SET \"NODE_ENV=development\" && nodemon server/server.js --exec babel-node || export NODE_ENV=development && nodemon server/server.js --exec babel-node",
     "start": "export NODE_ENV=development && nodemon --exec npm run babel-node -- server/server.js",
     "wtest": "SET \"NODE_ENV=test\" && mocha --require babel-register",
     "test": "export NODE_ENV=test || SET \"NODE_ENV=test\" && mocha --require babel-register",
