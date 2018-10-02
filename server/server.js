@@ -23,11 +23,6 @@ const pathToStaticFiles = path.resolve(__dirname, '../client/build')
 console.log('static-root:', pathToStaticFiles)
 app.use(express.static(path.resolve(__dirname, '../client/build')))
 
-// The "catchall" handler: for any request that doesn't
-// match one above, send back React's index.html file.
-// app.get('*', (req, res) => {
-//   res.sendFile(path.resolve(pathToStaticFiles, 'index.html'))
-// })
 
 const port = process.env.PORT
 
@@ -41,15 +36,23 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(morgan('dev'))
 
 require('../config/passport')
-app.use('/', users)
-app.use('/events', events)
-app.use('/images', images)
-app.use('/search', search)
-app.use('/location', location)
-app.use('/starwars', starwars)
-app.get('/', (req, res) => {
+app.use('/api', users)
+app.use('/api/events', events)
+app.use('/api/images', images)
+app.use('/api/search', search)
+app.use('/api/location', location)
+app.use('/api/starwars', starwars)
+app.get('/api', (req, res) => {
   redf('Invalid endpoint!')
   res.send('Invalid endpoint!')
+})
+
+// WARN: must come after all defined routes -> look above (routes definition)
+// The "catchall" handler: for any request that doesn't
+// match one above, send back React's index.html file.
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(pathToStaticFiles, 'index.html'))
+  //res.redirect('/')
 })
 
 // app.listen(port, () => {
