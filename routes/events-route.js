@@ -49,7 +49,30 @@ router.get('/user/:userId', async (req, res) => {
   }
 })
 
+router.get('/user/:userId/date', async (req, res) => {
+  try {
+    const events = await find('events', {userId: req.params.userId}).sort({'dates.startDateTime': 1})
+    res.send(events)
+  } catch (e) {
+    res.status(400).send(e)
+  }
+})
 
+// router.get('/user/:userId/location')
+//   try {
+
+//   } catch (e) {
+//     res.status(400).send(e)
+//   }
+
+router.get('/user/:userId/title', async (req, res) => {
+  try {
+    const events = await find('events', {userId: req.params.userId}).sort({'venueNames': 1})
+    res.send(events)
+  } catch (e) {
+    res.status(400).send(e)
+  }
+})
 
 router.get('/:id', async (req, res) => {
   // yellow('get/id')

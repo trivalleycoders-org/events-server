@@ -78,6 +78,45 @@ export const findById = async (collection, id, project = {}) => {
 
 }
 
+export const findByDate = async (collection, query = {}, project = {}) => {
+  try {
+    const client = await MongoClient.connect(mongoUrl, { useNewUrlParser: true })
+    const db = await client.db(dbName)
+    const ret = await db.collection(collection).find(query).project(project).toArray()
+    return { data: ret, meta: {} }
+  }
+  catch (e) {
+    redf('ERROR: dbFunctions.findByDate', e.message)
+    return returnError(e)
+  }
+}
+
+export const findByLocation = async (collection, query = {}, project = {}) => {
+  try {
+    const client = await MongoClient.connect(mongoUrl, { useNewUrlParser: true })
+    const db = await client.db(dbName)
+    const ret = await db.collection(collection).find(query).project(project).toArray()
+    return { data: ret, meta: {} }
+  }
+  catch (e) {
+    redf('ERROR: dbFunctions.findByLocation', e.message)
+    return returnError(e)
+  }  
+}
+
+export const findByTitle = async (collection, query = {}, project = {}) => {
+  try {
+    const client = await MongoClient.connect(mongoUrl, { useNewUrlParser: true })
+    const db = await client.db(dbName)
+    const ret = await db.collection(collection).find(query).project(project).toArray()
+    return { data: ret, meta: {} }
+  }
+  catch (e) {
+    redf('ERROR: dbFunctions.findByTitle', e.message)
+    return returnError(e)
+  }  
+}
+
 export const findOneAndDelete = async (collection, id) => {
   try {
     const objId = getObjectId(id)
