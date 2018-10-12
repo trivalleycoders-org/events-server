@@ -1,7 +1,7 @@
 import express from 'express'
 import { omit, merge } from 'ramda'
 /* User */
-import { find, findById, insertOne, findOneAndDelete, findOneAndUpdate, objectIdFromHexString } from '../db'
+import { find, findById, findByDate, findByTitle, insertOne, findOneAndDelete, findOneAndUpdate, objectIdFromHexString } from '../db'
 /* Dev */
 import { red, yellow } from '../logger'
 
@@ -51,23 +51,24 @@ router.get('/user/:userId', async (req, res) => {
 
 router.get('/user/:userId/date', async (req, res) => {
   try {
-    const events = await find('events', {userId: req.params.userId}).sort({'dates.startDateTime': 1})
+    const events = await findByDate('events', {userId: req.params.userId})
     res.send(events)
   } catch (e) {
     res.status(400).send(e)
   }
 })
 
-// router.get('/user/:userId/location')
+// router.get('/user/:userId/location', async (req, res) => {
 //   try {
 
 //   } catch (e) {
 //     res.status(400).send(e)
 //   }
+// })
 
 router.get('/user/:userId/title', async (req, res) => {
   try {
-    const events = await find('events', {userId: req.params.userId}).sort({'venueNames': 1})
+    const events = await findByTitle('events', {userId: req.params.userId})
     res.send(events)
   } catch (e) {
     res.status(400).send(e)

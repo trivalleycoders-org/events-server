@@ -82,7 +82,7 @@ export const findByDate = async (collection, query = {}, project = {}) => {
   try {
     const client = await MongoClient.connect(mongoUrl, { useNewUrlParser: true })
     const db = await client.db(dbName)
-    const ret = await db.collection(collection).find(query).project(project).toArray()
+    const ret = await db.collection(collection).find(query).sort({'dates.startDateTime': 1}).project(project).toArray()
     return { data: ret, meta: {} }
   }
   catch (e) {
@@ -91,24 +91,24 @@ export const findByDate = async (collection, query = {}, project = {}) => {
   }
 }
 
-export const findByLocation = async (collection, query = {}, project = {}) => {
-  try {
-    const client = await MongoClient.connect(mongoUrl, { useNewUrlParser: true })
-    const db = await client.db(dbName)
-    const ret = await db.collection(collection).find(query).project(project).toArray()
-    return { data: ret, meta: {} }
-  }
-  catch (e) {
-    redf('ERROR: dbFunctions.findByLocation', e.message)
-    return returnError(e)
-  }  
-}
+// export const findByLocation = async (collection, query = {}, project = {}) => {
+//   try {
+//     const client = await MongoClient.connect(mongoUrl, { useNewUrlParser: true })
+//     const db = await client.db(dbName)
+//     const ret = await db.collection(collection).find(query).project(project).toArray()
+//     return { data: ret, meta: {} }
+//   }
+//   catch (e) {
+//     redf('ERROR: dbFunctions.findByLocation', e.message)
+//     return returnError(e)
+//   }  
+// }
 
 export const findByTitle = async (collection, query = {}, project = {}) => {
   try {
     const client = await MongoClient.connect(mongoUrl, { useNewUrlParser: true })
     const db = await client.db(dbName)
-    const ret = await db.collection(collection).find(query).project(project).toArray()
+    const ret = await db.collection(collection).find(query).sort({'venueNames': 1}).project(project).toArray()
     return { data: ret, meta: {} }
   }
   catch (e) {
