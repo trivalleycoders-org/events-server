@@ -15,14 +15,14 @@ import starwars from '../routes/starwars-route'
 
 const app = express()
 const path = require('path')
+const rootUrl = process.env.ROOT_URL || '../client/build'
 
 // source: https://daveceddia.com/deploy-react-express-app-heroku/
 
 // Serve static files from the React app
-const pathToStaticFiles = path.resolve(__dirname, '../client/build')
+const pathToStaticFiles = path.resolve(__dirname, rootUrl)
 console.log('static-root:', pathToStaticFiles)
-app.use(express.static(path.resolve(__dirname, '../client/build')))
-
+app.use(express.static(path.resolve(__dirname, rootUrl)))
 
 const port = process.env.PORT
 
