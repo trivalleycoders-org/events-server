@@ -77,7 +77,8 @@ router.put('/user', auth.required, async (req, res, next) => {
 
 // Authentication
 router.post('/users/login', (req, res, next) => {
-  let cookieExpTime = 1800000
+  // let cookieExpTime = 1800000
+  let cookieExpTime = 259200000
   if (!req.body.email) {
     return res.status(422).json({ error: 'email can\'t be blank' })
   }

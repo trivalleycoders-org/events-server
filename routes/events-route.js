@@ -24,12 +24,8 @@ router.post('/', async (req, res) => {
 
 router.get('/', async (req, res) => {
   try {
-    const d = new Date()
-    const yr = d.getFullYear()
-    const mo = d.getMonth()
-    const day = d.getDay()
-    const today = new Date(yr, mo, day)
-    const events = await find('events', { 'dates.startDateTime': { $gt: today.toISOString() }})
+    const events = await find('events', { 'dates.endDateTime': { $gt: new Date().toISOString() }})
+    yellow('events.length', events.data.length)
     // const events = await find('events', { })
     res.send(events)
   } catch (e) {
@@ -40,7 +36,8 @@ router.get('/', async (req, res) => {
 router.get('/user/:userId', async (req, res) => {
 
   try {
-    const events = await find('events', {userId: req.params.userId})
+    const events = await find('events', { userId: req.params.userId, 'dates.endDateTime': { $gt: new Date().toISOString() } })
+    // const events = await find('events', {userId: req.params.userId})
     // const events = await find('events', {})
 
     res.send(events)
