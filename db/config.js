@@ -5,7 +5,7 @@ const nodeEnv = process.env.NODE_ENV
 greenf('NODE_ENV', nodeEnv)
 
 export const dbName = (() => {
-  if (nodeEnv === 'development') {
+  if (nodeEnv === '') {
     return process.env.DB_NAME_DEV
   } else if (nodeEnv === 'test') {
     return process.env.DB_NAME_TEST
@@ -16,7 +16,7 @@ export const dbName = (() => {
 greenf('database', dbName)
 
 export const mongoUrl = (() => {
-  if (nodeEnv === 'development') {
+  if (nodeEnv === '') {
     return process.env.MONGODB_URL_DEV
   } else if (nodeEnv === 'test') {
     return process.env.MONGODB_URL_TEST
