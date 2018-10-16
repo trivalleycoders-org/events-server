@@ -39,6 +39,7 @@ export const dropCollection = async (collection) => {
 }
 
 export const find = async (collection, query = {}, project = {}) => {
+  yellow('mongoUrl', mongoUrl)
   try {
     const client = await MongoClient.connect(mongoUrl, { useNewUrlParser: true })
     const db = await client.db(dbName)
