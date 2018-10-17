@@ -108,6 +108,10 @@ export const findOneAndUpdate = async (collection, id, filter, returnOriginal = 
     const db = await client.db(dbName)
     const ret = await db.collection(collection).findOneAndUpdate(
       { _id: objId },
+<<<<<<< Updated upstream
+=======
+      // { organization: 'BRIIA'},
+>>>>>>> Stashed changes
       { $set: cleanFilter },
       { returnOriginal: returnOriginal }
     )
