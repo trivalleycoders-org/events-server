@@ -2,8 +2,6 @@ import express from 'express'
 import { yellow } from '../logger'
 import { find } from '../db'
 
-import { find, findById, insertOne, findOneAndDelete, findOneAndUpdate } from '../db'
-
 const router = express.Router()
 
 router.get('/', async (req, res) => {
