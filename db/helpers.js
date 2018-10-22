@@ -1,17 +1,12 @@
 import { ObjectID } from  'mongodb'
 import { omit } from 'ramda'
-import { yellow, redf } from '../logger';
+import { yellow, redf } from '../logger'
 
-const isValidObjectID = (id) => {
-  // yellow('id', id)
-  const isValid = ObjectID.isValid(id)
-  // yellow('isValid', isValid)
-
-  return isValid
+export const isValidObjectID = (id) => {
+  return  ObjectID.isValid(id)
 }
 
 export const objectIdFromHexString = (hexId) => {
-  // yellow('hexId', hexId)
   try {
     return ObjectID.createFromHexString(hexId)
   }
