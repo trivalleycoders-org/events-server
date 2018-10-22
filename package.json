@@ -4,8 +4,8 @@
   "description": "server for events project",
   "scripts": {
     "babel-node": "babel-node",
-    "start": "nodemon --exec npm run babel-node -- server/server.js",
-    "startd": "export NODE_ENV=development && nodemon --exec npm run babel-node -- server/server.js",
+    "start": "npm run babel-node -- server/server.js",
+    "startd": "nodemon --exec npm run babel-node -- server/server.js",
     "test": "mocha --require babel-register",
     "test-watch": "export WATCH='watch' && nodemon --exec 'npm test'",
     "build": "babel . -d dist --presets es2015,stage-2 --ignore spec.js,node_modules",

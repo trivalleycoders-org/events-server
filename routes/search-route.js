@@ -11,8 +11,14 @@ router.get('/', async (req, res) => {
       { $text: { $search: searchTerm, $caseSensitive: false } })
     res.send(events)
   } catch (e) {
+    console.log('error while searching: ', e)
     res.status(400).send(e)
   }
+  console.log('after search')
 })
 
+// let events = await Event.find(
+//   { $text: { $search: searchTerm } },
+//   { score: { $meta: 'textScore' } }
+// ).sort({ score: { $meta: 'textScore' } })
 export default router
