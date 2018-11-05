@@ -31,15 +31,8 @@ describe('READ /events', async () => {
   })
   it('read all events', async () => {
     const r1 = await insertMany('events', sevenEvents)
-    // yellow('r1', r1)
     expect(r1.data.length).to.equal(7)
-    // const r2 = await find('events', {})
     const r2 = await request(app).get('/events')
-    yellow('r2', r2.body.data)
-
-    // expect()
-    // const insertedData = await insertMany('postalCodes', postalCodes)
-
   })
 
 })

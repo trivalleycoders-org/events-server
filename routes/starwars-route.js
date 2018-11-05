@@ -7,7 +7,6 @@ import { red, yellow } from '../logger'
 const router = express.Router()
 
 router.get('/:startsWith', (req, res) => {
-  // yellow('get names')
   const startsWith = req.params.startsWith.toLowerCase()
 
   try {
@@ -15,7 +14,6 @@ router.get('/:startsWith', (req, res) => {
         return n.toLowerCase().startsWith(startsWith)
       }
     )
-    // yellow('ret', ret)
     res.send({ data: ret, error: {}})
   } catch (e) {
     res.status(400).send(e)

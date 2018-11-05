@@ -1,8 +1,8 @@
 import express from 'express'
-import { append, pick } from 'ramda'
+import { pick } from 'ramda'
 import formidable from 'formidable'
 import { red, blue, yellow } from '../logger'
-import path, { dirname } from 'path'
+import path from 'path'
 import fs from 'fs'
 import S3 from 'aws-sdk/clients/s3'
 
@@ -37,12 +37,10 @@ const checkDirectoryExists = (dir) => {
 
 router.post('/', async (req, res) => {
   try {
-    ////////////////////////////////////////////
     const form = new formidable.IncomingForm()
     let newFileName = undefined
     let dirName = 'uploads'
 
-    // yellow('form', form)
     form.multiples = true
     form.uploadDir = path.join(__dirname, `../${dirName}`)
     checkDirectoryExists(dirName)

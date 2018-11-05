@@ -1,16 +1,14 @@
+import express from 'express'
 import passport from 'passport'
-
 import { setPassword, generateJWT } from '../utils'
 import { red } from '../logger/'
 import { findById, findOneAndUpdate, insertOne, find } from '../db/dbFunctions'
 /* Dev */
 // eslint-disable-next-line
 import { yellow } from '../logger'
+import auth from './auth'
 
-
-const router = require('express').Router()
-
-const auth = require('./auth')
+const router = express.Router()
 
 const toAuthJSON = function (user) {
   return {
@@ -30,10 +28,10 @@ router.get('/user', auth.required, async (req, res, next) => {
     if (!user) { return res.sendStatus(401) }
     const u = user.data[0]
     u.id = user.data[0]._id
-    return res.json(toAuthJSON(u))
+    res.send(toAuthJSON(u))
   } catch (err) {
     // return next(err)
-    return res.json({ error: err })
+    return res.send({ error: err })
   }
 })
 
@@ -77,7 +75,7 @@ router.put('/user', auth.required, async (req, res, next) => {
 
 // Authentication
 router.post('/users/login', (req, res, next) => {
-  let cookieExpTime = 1800000
+  let cookieExpTime = 259200000
   if (!req.body.email) {
     return res.status(422).json({ error: 'email can\'t be blank' })
   }
@@ -148,4 +146,4 @@ router.post('/users', async (req, res, next) => {
   }
 })
 
-module.exports = router
+export default router

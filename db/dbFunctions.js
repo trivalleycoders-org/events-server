@@ -23,9 +23,11 @@ export const dropCollection = async (collection) => {
     const client = await MongoClient.connect(mongoUrl, { useNewUrlParser: true })
     const db = await client.db(dbName)
     const ret = await db.collection(collection).drop()
+    client.close()
     return ret
   }
   catch (e) {
+
     if (e.message = 'ns not found') {
       return true
     } else {
@@ -41,6 +43,7 @@ export const find = async (collection, query = {}, project = {}) => {
     const client = await MongoClient.connect(mongoUrl, { useNewUrlParser: true })
     const db = await client.db(dbName)
     const ret = await db.collection(collection).find(query).project(project).toArray()
+    client.close()
     return { data: ret, meta: {} }
   }
   catch (e) {
@@ -54,6 +57,7 @@ export const search = async (collection, searchTerm, project) => {
     const client = await MongoClient.connect(mongoUrl, { useNewUrlParser: true })
     const db = await client.db(dbName)
     const ret = await db.collection(collection).find({ $text: { $search: searchTerm } }).project(project).sort({ score: { $meta: 'textScore' } }).toArray()
+    client.close()
     return { data: ret, meta: {} }
   }
   catch (e) {
@@ -69,6 +73,7 @@ export const findById = async (collection, id, project = {}) => {
     const client = await MongoClient.connect(mongoUrl, { useNewUrlParser: true })
     const db = await client.db(dbName)
     const ret = await db.collection(collection).find({ _id: objId }).project(project).toArray()
+    client.close()
     return { data: ret, meta: {} }
   }
   catch (e) {
@@ -84,6 +89,7 @@ export const findOneAndDelete = async (collection, id) => {
     const client = await MongoClient.connect(mongoUrl, { useNewUrlParser: true })
     const db = await client.db(dbName)
     const ret = await db.collection(collection).findOneAndDelete({ _id: objId })
+    client.close()
     return { data: [ret.value], meta: {} }
   }
   catch (e) {
@@ -104,6 +110,7 @@ export const findOneAndUpdate = async (collection, id, filter, returnOriginal = 
       { $set: cleanFilter },
       { returnOriginal: returnOriginal }
     )
+    client.close()
     return { data: [ret.value], meta: {} }
   }
   catch (e) {
@@ -117,7 +124,7 @@ export const insertOne = async (collection, data) => {
     const client = await MongoClient.connect(mongoUrl, { useNewUrlParser: true })
     const db = await client.db(dbName)
     const ret = await db.collection(collection).insertOne(data)
-    // yellow('ret', ret)
+    client.close()
     return { data: ret.ops, meta: { n: 1 } }
   }
   catch (e) {
@@ -132,6 +139,7 @@ export const insertMany = async (collection, data) => {
     const client = await MongoClient.connect(mongoUrl, { useNewUrlParser: true })
     const db = await client.db(dbName)
     const ret = await db.collection(collection).insertMany(data)
+    client.close()
     return { data: ret.ops, meta: { n: 1 } }
   }
   catch (e) {

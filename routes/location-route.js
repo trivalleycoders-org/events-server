@@ -1,5 +1,5 @@
 import express from 'express'
-import fetch from 'node-fetch'
+// import fetch from 'node-fetch'
 /* Dev */
 import { red, yellow } from '../logger'
 
@@ -17,18 +17,18 @@ const executeAggregate = async (query) => {
 }
 
 
-router.get('/postal-codes/:startsWith', async (req, res) => {
+router.get('/postal-code/:startsWith', async (req, res) => {
   const startsWith = req.params.startsWith
-  // yellow('startsWith', startsWith)
   const re = new RegExp(`^${startsWith}`)
-  // yellow('re', re)
-
   const match1 = {
     $match: { 'postalCode': { $regex: re , $options: 'im' } }
   }
+
   const project1 = {
     $project: {
       postalCode: 1,
+      cityName: 1,
+      stateCode: 1,
       searchString: {
         $cond: { if: { $ifNull: ['$stateName', false] },
           then: { $concat: [ '$postalCode', ' ', '$cityName', ' ', '$stateName' ] },
@@ -41,9 +41,8 @@ router.get('/postal-codes/:startsWith', async (req, res) => {
     match1,
     project1,
   ]
-  // yellow('q', q)
   const ret = await executeAggregate(q)
-  // yellow('ret', ret)
+
   res.send(JSON.stringify(ret))
 })
 
