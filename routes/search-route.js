@@ -13,7 +13,10 @@ router.get('/', async (req, res) => {
     // Example of regular expression Search
     // let events = await Event.find({ 'title': { '$regex': pattern, '$options': 'i' } })
     let events = await find('events',
-      { $text: { $search: searchTerm, $caseSensitive: false } })
+      {
+        $text: { $search: searchTerm, $caseSensitive: false },
+        'dates.endDateTime': { $gt: new Date().toISOString() }
+      })
     res.send(events)
   } catch (e) {
     console.log('error while searching: ', e)
