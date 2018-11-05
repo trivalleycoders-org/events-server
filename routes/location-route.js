@@ -19,10 +19,7 @@ const executeAggregate = async (query) => {
 
 router.get('/postal-code/:startsWith', async (req, res) => {
   const startsWith = req.params.startsWith
-  // yellow('startsWith', startsWith)
   const re = new RegExp(`^${startsWith}`)
-  // yellow('re', re)
-
   const match1 = {
     $match: { 'postalCode': { $regex: re , $options: 'im' } }
   }

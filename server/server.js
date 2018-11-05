@@ -4,8 +4,6 @@ import cors from 'cors'
 import morgan from 'morgan'
 import 'babel-polyfill'
 
-
-import { greenf, redf, yellow } from '../logger'
 import users from '../routes/user-route'
 import events from '../routes/events-route'
 import images from '../routes/image-route'
@@ -13,11 +11,14 @@ import search from '../routes/search-route'
 import location from '../routes/location-route'
 import starwars from '../routes/starwars-route'
 
+/* Dev */
+import { greenf, redf, yellow } from '../logger'
+
+
 const app = express()
 const path = require('path')
-const rootUrl = process.env.ROOT_URL || '../client/build'
 
-// source: https://daveceddia.com/deploy-react-express-app-heroku/
+const rootUrl = process.env.ROOT_URL || '../client/build'
 
 // Serve static files from the React app
 const pathToStaticFiles = path.resolve(__dirname, rootUrl)

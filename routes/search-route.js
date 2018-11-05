@@ -1,17 +1,12 @@
 import express from 'express'
-import { yellow } from '../logger'
 import { find } from '../db'
+import { yellow } from '../logger'
 
 const router = express.Router()
 
 router.get('/', async (req, res) => {
-  // yellow('search term', req.query.searchTerm)
   const searchTerm = req.query.searchTerm.substr(1).slice(0, -1)
-  // const pattern = '.*' + searchTerm.substr(1).slice(0, -1) + '.*'
   try {
-    console.log('search substr: ', searchTerm)
-    // Example of regular expression Search
-    // let events = await Event.find({ 'title': { '$regex': pattern, '$options': 'i' } })
     let events = await find('events',
       {
         $text: { $search: searchTerm, $caseSensitive: false },

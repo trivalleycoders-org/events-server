@@ -25,8 +25,6 @@ router.post('/', async (req, res) => {
 router.get('/', async (req, res) => {
   try {
     const events = await find('events', { 'dates.endDateTime': { $gt: new Date().toISOString() }})
-    yellow('events.length', events.data.length)
-    // const events = await find('events', { })
     res.send(events)
   } catch (e) {
     res.status(400).send(e)
@@ -37,9 +35,6 @@ router.get('/user/:userId', async (req, res) => {
 
   try {
     const events = await find('events', { userId: req.params.userId, 'dates.endDateTime': { $gt: new Date().toISOString() } })
-    // const events = await find('events', {userId: req.params.userId})
-    // const events = await find('events', {})
-
     res.send(events)
   } catch (e) {
     res.status(400).send(e)
@@ -49,7 +44,6 @@ router.get('/user/:userId', async (req, res) => {
 
 
 router.get('/:id', async (req, res) => {
-  // yellow('get/id')
   const id = req.params.id
   try {
     let event = await findById('events', id)
@@ -65,7 +59,6 @@ router.get('/:id', async (req, res) => {
 
 router.delete('/:id', async (req, res) => {
   const id = req.params.id
-
   try {
     let event = await findOneAndDelete('events', id)
     if (!event) {
@@ -88,8 +81,6 @@ router.patch('/:id', async (req, res) => {
       postalCodeId,
       { cityName: 1, postalCode: 1, stateCode: 1, _id: 0 }
     )
-    // yellow('postalCodeId', postalCodeId)
-    // yellow('postalData', postalData)
     const a = omit(['postalCode_id'], eventSent)
     const b = merge(a, postalData.data[0])
     const eventToReturn = await findOneAndUpdate(
@@ -97,7 +88,6 @@ router.patch('/:id', async (req, res) => {
       id,
       b,
     )
-    // yellow('eventToReturn: ', eventToReturn)
     if (!eventToReturn) {
       return res.status(404).send()
     }
