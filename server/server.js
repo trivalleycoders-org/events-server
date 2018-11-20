@@ -18,13 +18,6 @@ import { greenf, redf, yellow } from '../logger'
 const app = express()
 const path = require('path')
 
-const rootUrl = process.env.ROOT_URL || '../client/build'
-
-// Serve static files from the React app
-const pathToStaticFiles = path.resolve(__dirname, rootUrl)
-console.log('static-root:', pathToStaticFiles)
-app.use(express.static(path.resolve(__dirname, rootUrl)))
-
 const port = process.env.PORT
 
 if (process.env.NODE_ENV !== 'production') {
@@ -47,18 +40,6 @@ app.get('/api', (req, res) => {
   redf('Invalid endpoint!')
   res.send('Invalid endpoint!')
 })
-
-// WARN: must come after all defined routes -> look above (routes definition)
-// The "catchall" handler: for any request that doesn't
-// match one above, send back React's index.html file.
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve(pathToStaticFiles, 'index.html'))
-  //res.redirect('/')
-})
-
-// app.listen(port, () => {
-//   greenf('server started - ', port)
-// })
 
 if (!module.parent) {
   app.listen(port, () => {
