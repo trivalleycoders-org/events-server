@@ -1,16 +1,19 @@
 import express from 'express'
 // import fetch from 'node-fetch'
 /* Dev */
+
+import { mongoUrl } from './config'
 import { red, yellow } from '../logger'
 
 const router = express.Router()
 const MongoClient = require('mongodb').MongoClient
 const database = 'EventsDev'
 const collection = 'postalCodes'
-const url = 'mongodb://localhost:27017'
+// const url = 'mongodb://localhost:27017'
+
 
 const executeAggregate = async (query) => {
-  const client = await MongoClient.connect(url, { useNewUrlParser: true })
+  const client = await MongoClient.connect(mongoUrl, { useNewUrlParser: true })
   const db = await client.db(database)
   const ret = await db.collection(collection).aggregate(query).toArray()
   return { data: ret, meta: {} }

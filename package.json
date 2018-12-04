@@ -14,9 +14,6 @@
     "deploy2test": "bash deploy.sh",
     "lint": "eslint ."
   },
-  "engines": {
-    "node": "^8.11.1"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://"
