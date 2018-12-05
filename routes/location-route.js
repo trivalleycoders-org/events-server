@@ -2,7 +2,7 @@ import express from 'express'
 // import fetch from 'node-fetch'
 /* Dev */
 
-import { mongoUrl } from './config'
+import { mongoUrl } from '../db/config'
 import { red, yellow } from '../logger'
 
 const router = express.Router()
@@ -13,6 +13,7 @@ const collection = 'postalCodes'
 
 
 const executeAggregate = async (query) => {
+  console.log('mongourl: ', mongoUrl)
   const client = await MongoClient.connect(mongoUrl, { useNewUrlParser: true })
   const db = await client.db(database)
   const ret = await db.collection(collection).aggregate(query).toArray()
@@ -45,6 +46,7 @@ router.get('/postal-code/:startsWith', async (req, res) => {
     project1,
   ]
   const ret = await executeAggregate(q)
+  console.log('ret: ', ret)
 
   res.send(JSON.stringify(ret))
 })
